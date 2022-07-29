@@ -9,13 +9,21 @@ import java.util.List;
 
 public class LoginPage extends BaseClass {
 
+
+    @FindBy(how = How.XPATH, using = "//input[@name='mobile']")
+    public static WebElement mobileNo_input;
+
+
+    @FindBy(how = How.XPATH, using = "//button[text()='Get OTP']")
+    public static WebElement otp_button;
+
     @FindBy(how = How.XPATH, using = "//a[text()='Login / Sign-up']")
     public static WebElement loginSignUp_link;
-    //a[text()='Login with password']
+
     @FindBy(how = How.XPATH, using = "//a[text()='Login with password']")
     public static WebElement loginWithPassword_link;
 
-    @FindBy(how = How.XPATH, using = "//h1[text()='Dashboard']")
+    @FindBy(how = How.XPATH, using = "//*[contains(text(),'Dashboard')]")
     public static WebElement dashBoard_page;
 
     @FindBy(how = How.XPATH, using = "//a[text()='Logout']")
@@ -31,10 +39,10 @@ public class LoginPage extends BaseClass {
     public static WebElement rememberMe_checkBox;
 
 
-    @FindBy(how = How.XPATH, using = "//button[text()='Login']")
+    @FindBy(how = How.XPATH, using = "//form[@action='http://dev.blumart.in/login']//button[contains(text(),'Login')]")
     public static WebElement login_button;
 
-    //Home Page locator
+    //-------------------Home Page locator
     @FindBy(how = How.XPATH, using = "(//div[@class='row gutters-5 row-cols-xxl-4 row-cols-xl-3 row-cols-lg-4 row-cols-md-3 row-cols-2']//div[@class='position-relative'])[1]")
     public static WebElement product_image;
 
@@ -88,6 +96,10 @@ public class LoginPage extends BaseClass {
 
     @FindBy(how = How.XPATH, using = "//button[contains(text(),'Complete Order')]")
     public static WebElement complete_order_button;
+
+
+//------------------Admin locators
+
 
 
     public LoginPage(WebDriver driver) {

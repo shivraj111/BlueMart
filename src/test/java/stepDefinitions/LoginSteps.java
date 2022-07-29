@@ -4,6 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import helpers.MySqlDB;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -12,6 +13,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import pageobjects.LoginPage;
 import stepDefinitions.setUp.BrowserSetup;
 
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class LoginSteps {
@@ -19,12 +23,48 @@ public class LoginSteps {
     public WebDriverWait wait = BrowserSetup.wait;
     public Properties prop = BrowserSetup.prop;
 
-    @Given("Launch the application")
-    public void launch_the_application() {
+    @Given("^Login \"([^\"]*)\" app with (.*) and (.*)$")
+    public void login_application_with(String appName, String username, String password) throws InterruptedException {
+        switch(appName)
+        {
+            case "Buyer":
+                driver.get(prop.getProperty("BaseURL"));
+                PageFactory.initElements(driver, LoginPage.class);
+                LoginPage.loginSignUp_link.click();
+                System.out.println("Login link clicked");
+                LoginPage.loginWithPassword_link.click();
+                System.out.println("login With Password Link  clicked");
+                LoginPage.email_input.sendKeys(username);
+                LoginPage.password_input.sendKeys(password);
+                LoginPage.rememberMe_checkBox.click();
+                PageFactory.initElements(driver, LoginPage.class);
+                LoginPage.login_button.click();
+                Thread.sleep(3000);
+                Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
+
+                break;
+            case "Admin":
+                driver.get(prop.getProperty("BaseURL")+"login");
+                PageFactory.initElements(driver, LoginPage.class);
+                LoginPage.email_input.sendKeys(username);
+                LoginPage.password_input.sendKeys(password);
+                LoginPage.rememberMe_checkBox.click();
+                LoginPage.login_button.click();
+                Thread.sleep(3000);
+                Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
+                Thread.sleep(1000);
+                break;
+        }
+    }
+
+    @Given("^Login \"([^\"]*)\" app with (.*)$")
+    public void login_application_(String mobile_No) throws InterruptedException {
+        driver.get(prop.getProperty("BaseURL"));
         PageFactory.initElements(driver, LoginPage.class);
         LoginPage.loginSignUp_link.click();
         System.out.println("Login link clicked");
-
+        LoginPage.mobileNo_input.sendKeys(mobile_No);
+        LoginPage.otp_button.click();
     }
 
     @And("Logout from App")
@@ -33,22 +73,9 @@ public class LoginSteps {
         Assert.assertTrue("Logout not happen ", LoginPage.loginSignUp_link.isDisplayed());
     }
 
-    @And("Login with (.*) and (.*)$")
-    public void enter_UserName_and_Password(String username, String password) throws InterruptedException {
-        PageFactory.initElements(driver, LoginPage.class);
-        LoginPage.loginWithPassword_link.click();
-        System.out.println("login With Password Link  clicked");
-        LoginPage.email_input.sendKeys(username);
-        LoginPage.password_input.sendKeys(password);
-        LoginPage.rememberMe_checkBox.click();
-        LoginPage.login_button.click();
-        Thread.sleep(3000);
-        Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
-    }
-
     @And("Select product")
     public void select_product() throws InterruptedException {
-
+        String gst_details,pan_details,name,address,postal_code,city,state,country,phone;
         LoginPage.allProduct_link.click();
         Thread.sleep(1000);
         wait.until(ExpectedConditions.visibilityOf(LoginPage.product_image)).click();
@@ -61,15 +88,15 @@ public class LoginSteps {
         Thread.sleep(1000);
         LoginPage.continueShipping_button.click();
         Assert.assertTrue("2. Shipping info not displayed or name changed", LoginPage.phase.getText().equals("2. Shipping info"));
-        String gst_details = LoginPage.GST_no.getText();
-        String pan_details = LoginPage.PAN_no.getText();
-        String name = LoginPage.name.getText();
-        String address = LoginPage.address.getText();
-        String postal_code = LoginPage.postal_code.getText();
-        String city = LoginPage.city.getText();
-        String state = LoginPage.state.getText();
-        String country = LoginPage.country.getText();
-        String phone = LoginPage.phone.getText();
+        gst_details= LoginPage.GST_no.getText();
+        pan_details = LoginPage.PAN_no.getText();
+         name = LoginPage.name.getText();
+         address = LoginPage.address.getText();
+        postal_code = LoginPage.postal_code.getText();
+         city = LoginPage.city.getText();
+         state = LoginPage.state.getText();
+        country = LoginPage.country.getText();
+         phone = LoginPage.phone.getText();
         Assert.assertEquals("GST number mismatch", prop.getProperty("GST"), gst_details.replaceAll("GST Number :", "").trim());
         Assert.assertEquals("PAN number mismatch", prop.getProperty("PAN"), pan_details.replaceAll("PAN Number :", "").trim());
         Assert.assertEquals("Name mismatch", prop.getProperty("Name"), name.trim());
@@ -86,11 +113,19 @@ public class LoginSteps {
         LoginPage.complete_order_button.click();
         Assert.assertTrue("4.Confirmation step not displayed or name changed", LoginPage.phase.getText().equals("4. Confirmation"));
 
-
-
-
-
     }
+
+    public static void main(String[] args) throws IOException, SQLException {
+        MySqlDB sql= new MySqlDB();
+        ResultSet rs=sql.executeQuery("Select * from mobile_verifications as m  where mobile=8898347897;","blumart");
+        while(rs.next())
+        {
+            System.out.println(rs.getString("mobile")+"  "+rs.getInt("otp"));
+        }
+        sql.closeConnection();
+    }
+
+
 
 
 }

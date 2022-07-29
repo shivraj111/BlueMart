@@ -29,7 +29,7 @@ public class BrowserSetup {
         if (System.getProperty("browser").contains("chrome") && System.getProperty("env").contains("dev")) {
             WebDriverManager.chromedriver().setup();
             driver = new ChromeDriver(options);
-            driver.get("http://dev.blumart.in/");
+
         }
         wait = new WebDriverWait(driver, 180);
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);

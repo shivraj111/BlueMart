@@ -6,11 +6,11 @@ import cucumber.api.junit.Cucumber;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions( strict = true,
+@CucumberOptions( strict = false,
         plugin = {"html:target/cucumberHtmlReport"},
         //pretty:target/cucumber-json-report.json
         features = {"src/test/resources/features"},
-        tags={"@Test"},
+        tags={"@Test_1"},
         glue = {"stepDefinitions"}
 )
 
