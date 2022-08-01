@@ -5,7 +5,7 @@ formatter.feature({
   "keyword": "Feature"
 });
 formatter.scenarioOutline({
-  "name": "Verification of login functionality through Mobile NO",
+  "name": "Verification of registration and unregistration functionality",
   "description": "",
   "keyword": "Scenario Outline",
   "tags": [
@@ -15,8 +15,12 @@ formatter.scenarioOutline({
   ]
 });
 formatter.step({
-  "name": "Login \"Buyer\" app with \u003cMobile_no\u003e",
+  "name": "Registration of \"Buyer\" app using \u003cMobile_no\u003e , \u003cUsername\u003e and \u003cPassword\u003e",
   "keyword": "Given "
+});
+formatter.step({
+  "name": "Unregistration of \"Buyer\" using \u003cMobile_no\u003e on \"Admin\" app",
+  "keyword": "And "
 });
 formatter.examples({
   "name": "",
@@ -25,18 +29,22 @@ formatter.examples({
   "rows": [
     {
       "cells": [
-        "Mobile_no"
+        "Mobile_no",
+        "Username",
+        "Password"
       ]
     },
     {
       "cells": [
-        "8898347897"
+        "8898347897",
+        "111shivraj@gmail.com",
+        "Test1"
       ]
     }
   ]
 });
 formatter.scenario({
-  "name": "Verification of login functionality through Mobile NO",
+  "name": "Verification of registration and unregistration functionality",
   "description": "",
   "keyword": "Scenario Outline",
   "tags": [
@@ -49,15 +57,24 @@ formatter.before({
   "status": "passed"
 });
 formatter.step({
-  "name": "Login \"Buyer\" app with 8898347897",
+  "name": "Registration of \"Buyer\" app using 8898347897 , 111shivraj@gmail.com and Test1",
   "keyword": "Given "
 });
 formatter.match({
-  "location": "LoginSteps.login_application_with_shivraj_gmail_com_and_ShivAnsh(String,String,String)"
+  "location": "LoginSteps.registration_of_app_using(String,String,String,String)"
 });
 formatter.result({
-  "error_message": "cucumber.runtime.CucumberException: Step [^Login \"([^\"]*)\" app with (.*)$] is defined with 3 parameters at \u0027stepDefinitions.LoginSteps.login_application_with_shivraj_gmail_com_and_ShivAnsh(String,String,String) in file:/C:/Users/Om%20Computers/IdeaProjects/Sample/target/test-classes/\u0027.\nHowever, the gherkin step has 2 arguments:\n * Buyer\n * 8898347897\nStep text: Login \"Buyer\" app with 8898347897\r\n\tat cucumber.runner.PickleStepDefinitionMatch.arityMismatch(PickleStepDefinitionMatch.java:84)\r\n\tat cucumber.runner.PickleStepDefinitionMatch.runStep(PickleStepDefinitionMatch.java:36)\r\n\tat cucumber.runner.TestStep.executeStep(TestStep.java:65)\r\n\tat cucumber.runner.TestStep.run(TestStep.java:50)\r\n\tat cucumber.runner.PickleStepTestStep.run(PickleStepTestStep.java:43)\r\n\tat cucumber.runner.TestCase.run(TestCase.java:46)\r\n\tat cucumber.runner.Runner.runPickle(Runner.java:49)\r\n\tat cucumber.runtime.junit.PickleRunners$NoStepDescriptions.run(PickleRunners.java:146)\r\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:68)\r\n\tat cucumber.runtime.junit.FeatureRunner.runChild(FeatureRunner.java:23)\r\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\r\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\r\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\r\n\tat cucumber.runtime.junit.FeatureRunner.run(FeatureRunner.java:73)\r\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:123)\r\n\tat cucumber.api.junit.Cucumber.runChild(Cucumber.java:65)\r\n\tat org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)\r\n\tat org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)\r\n\tat org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)\r\n\tat org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)\r\n\tat org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)\r\n\tat cucumber.api.junit.Cucumber$RunCucumber.evaluate(Cucumber.java:147)\r\n\tat org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)\r\n\tat org.junit.runners.ParentRunner.run(ParentRunner.java:413)\r\n\tat org.junit.runner.JUnitCore.run(JUnitCore.java:137)\r\n\tat com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:69)\r\n\tat com.intellij.rt.junit.IdeaTestRunner$Repeater$1.execute(IdeaTestRunner.java:38)\r\n\tat com.intellij.rt.execution.junit.TestsRepeater.repeat(TestsRepeater.java:11)\r\n\tat com.intellij.rt.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:35)\r\n\tat com.intellij.rt.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:235)\r\n\tat com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:54)\r\n",
-  "status": "failed"
+  "status": "passed"
+});
+formatter.step({
+  "name": "Unregistration of \"Buyer\" using 8898347897 on \"Admin\" app",
+  "keyword": "And "
+});
+formatter.match({
+  "location": "LoginSteps.unregistration_of_using_on_app(String,String,String)"
+});
+formatter.result({
+  "status": "passed"
 });
 formatter.after({
   "status": "passed"

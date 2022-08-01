@@ -3,6 +3,7 @@ package stepDefinitions.setUp;
 import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import helpers.MySqlDB;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -40,8 +41,10 @@ public class BrowserSetup {
 
     @After
     public void tearDown() throws Exception {
+        MySqlDB sql= new MySqlDB();
         //driver.quit();
         //driver.close();
+
     }
 
 

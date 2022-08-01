@@ -9,6 +9,70 @@ import java.util.List;
 
 public class LoginPage extends BaseClass {
 
+    @FindBy(how = How.XPATH, using = "//div[@class='container']//span[text()='Manage Profile']")
+    public static WebElement manage_profile;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='card']//input[@placeholder='Shop Name']")
+    public static WebElement shop_name_input;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='card']//input[@placeholder='Confirm Password']")
+    public static WebElement confirm_password_input;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='card']//input[@placeholder='New Password']")
+    public static WebElement new_password_input;
+
+    @FindBy(how = How.XPATH, using = "//button[text()='Update Profile']")
+    public static WebElement update_profile_button;
+
+    @FindBy(how = How.XPATH, using = "//*[text()='Your Profile has been updated successfully!']")
+    public static WebElement profile_update_msg;
+
+
+    @FindBy(how = How.XPATH, using = "//*[text()='A verification mail has been sent to the mail you provided us with.']")
+    public static WebElement update_email_msg;
+
+    @FindBy(how = How.XPATH, using = "//input[@name='email' and @placeholder='Your Email']")
+    public static WebElement change_email_id_input;
+
+    @FindBy(how = How.XPATH, using = "//span[text()='Products']")
+    public static WebElement admin_product;
+
+
+    @FindBy(how = How.XPATH, using = "//li[@class='aiz-side-nav-item mm-active']//span[text()='Products']")
+    public static List<WebElement> admin_product_expand;
+
+    @FindBy(how = How.XPATH, using = "//li[@class='aiz-side-nav-item mm-active']//span[text()='Buyers']")
+    public static List<WebElement> admin_buyer_expand;
+
+    @FindBy(how = How.XPATH, using = "//span[text()='Buyers']")
+    public static WebElement admin_buyer;
+
+    @FindBy(how = How.XPATH, using = "//span[text()='Buyer list']")
+    public static WebElement admin_buyer_list;
+
+    @FindBy(how = How.XPATH, using = "//h1[text()='All Buyers']")
+    public static WebElement admin_all_buyer_page;
+
+    @FindBy(how = How.XPATH, using = "//input[@placeholder='Type email or name & Enter']")
+    public static WebElement admin_search_mobileno_Or_EmailId;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='card-body']/table/tbody/tr")
+    public static List<WebElement> admin_search_result;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='card-body']//td[text()='+918898347897']/following-sibling::td/a[@title='Delete']")
+    public static WebElement admin_search_delete;
+
+    @FindBy(how = How.XPATH, using = "//div[@id='delete-modal' and @class='modal fade show']//a[text()='Delete']")
+    public static WebElement admin_search_delete_button;
+
+    @FindBy(how = How.XPATH, using = "//button[text()='Update Email']")
+    public static WebElement update_email_button;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='card']//input[@placeholder='Your Phone']")
+    public static WebElement phone_no_input;
+
+    @FindBy(how = How.XPATH, using = "//h1[text()='Manage Profile']")
+    public static WebElement manage_profile_page;
 
     @FindBy(how = How.XPATH, using = "//input[@name='mobile']")
     public static WebElement mobileNo_input;
@@ -17,6 +81,10 @@ public class LoginPage extends BaseClass {
     @FindBy(how = How.XPATH, using = "//button[text()='Get OTP']")
     public static WebElement otp_button;
 
+    @FindBy(how = How.XPATH, using = "//input[@name='otp']")
+    public static WebElement otp_input;
+    @FindBy(how = How.XPATH, using = "//button[text()='Login as buyer']")
+    public static WebElement loginasBuyer_button;
     @FindBy(how = How.XPATH, using = "//a[text()='Login / Sign-up']")
     public static WebElement loginSignUp_link;
 

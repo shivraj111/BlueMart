@@ -2,7 +2,7 @@ Feature: Buyer functionality
 
 @Test
   Scenario Outline: Verification of login and logout functionality
-    Given Login "Buyer" application with <Username> and <Password>
+    Given Login "Buyer" app with <Username> and <Password>
     And Logout from App
 
     Examples:
@@ -11,7 +11,7 @@ Feature: Buyer functionality
 
 @Test
   Scenario Outline: Verification of buying functionality
-    Given Login "Buyer" application with <Username> and <Password>
+    Given Login "Buyer" app with <Username> and <Password>
     And Select product
 
     Examples:
@@ -20,7 +20,7 @@ Feature: Buyer functionality
 
 @Test
   Scenario Outline: Verification of registration and unregistration functionality
-    Given Login "Admin" application with <Username> and <Password>
+#    Given Login "Admin" app with <Username> and <Password>
 
 
     Examples:
@@ -29,11 +29,12 @@ Feature: Buyer functionality
 
 
   @Test_1
-  Scenario Outline: Verification of login functionality through Mobile NO
-    Given Login "Buyer" app with <Mobile_no>
+  Scenario Outline: Verification of registration and unregistration functionality
+    Given Registration of "Buyer" app using <Mobile_no> , <Username> and <Password>
+    And Unregistration of "Buyer" using <Mobile_no> on "Admin" app
 
     Examples:
-      | Mobile_no  |
-      | 8898347897 |
+      | Mobile_no  | Username             | Password |
+      | 8898347897 | 111shivraj@gmail.com | Test1    |
 
 

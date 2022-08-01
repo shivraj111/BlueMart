@@ -1,11 +1,13 @@
 package stepDefinitions;
 
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import helpers.MySqlDB;
 import org.junit.Assert;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,10 +25,37 @@ public class LoginSteps {
     public WebDriverWait wait = BrowserSetup.wait;
     public Properties prop = BrowserSetup.prop;
 
+
+    @Given("^Unregistration of \"([^\"]*)\" using (.*) on \"([^\"]*)\" app$")
+    public void unregistration_of_using_on_app(String buyer, String mobile_no, String admin) throws InterruptedException {
+        adminLogin(prop.getProperty("Admin.username"), prop.getProperty("Admin.password"));
+        if (LoginPage.admin_product_expand.size() != 0) {
+            LoginPage.admin_product.click();
+        }
+        if (LoginPage.admin_buyer_expand.size() == 0) {
+            LoginPage.admin_buyer.click();
+        }
+        LoginPage.admin_buyer_list.click();
+        LoginPage.admin_all_buyer_page.isDisplayed();
+        LoginPage.admin_search_mobileno_Or_EmailId.sendKeys(mobile_no);
+        LoginPage.admin_search_mobileno_Or_EmailId.sendKeys(Keys.ENTER);
+        Thread.sleep(1000);
+        if (LoginPage.admin_search_result.size() != 1) {
+            LoginPage.admin_search_mobileno_Or_EmailId.sendKeys(Keys.ENTER);
+            Thread.sleep(1000);
+        }
+        Assert.assertEquals("More result with one mobile no search ", 1, LoginPage.admin_search_result.size());
+        Thread.sleep(1000);
+        LoginPage.admin_search_delete.click();
+        Thread.sleep(1000);
+        LoginPage.admin_search_delete_button.click();
+
+
+    }
+
     @Given("^Login \"([^\"]*)\" app with (.*) and (.*)$")
     public void login_application_with(String appName, String username, String password) throws InterruptedException {
-        switch(appName)
-        {
+        switch (appName) {
             case "Buyer":
                 driver.get(prop.getProperty("BaseURL"));
                 PageFactory.initElements(driver, LoginPage.class);
@@ -44,27 +73,46 @@ public class LoginSteps {
 
                 break;
             case "Admin":
-                driver.get(prop.getProperty("BaseURL")+"login");
-                PageFactory.initElements(driver, LoginPage.class);
-                LoginPage.email_input.sendKeys(username);
-                LoginPage.password_input.sendKeys(password);
-                LoginPage.rememberMe_checkBox.click();
-                LoginPage.login_button.click();
-                Thread.sleep(3000);
-                Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
-                Thread.sleep(1000);
+                adminLogin(username, password);
                 break;
         }
     }
 
     @Given("^Login \"([^\"]*)\" app with (.*)$")
-    public void login_application_(String mobile_No) throws InterruptedException {
+    public void login_application_(String appName, String mobile_No) throws InterruptedException, SQLException, IOException {
+
+
+    }
+
+    @Given("^Registration of \"([^\"]*)\" app using (.*) , (.*) and (.*)$")
+    public void registration_of_app_using(String appName, String mobile_no, String userName, String password) throws SQLException, IOException {
         driver.get(prop.getProperty("BaseURL"));
         PageFactory.initElements(driver, LoginPage.class);
         LoginPage.loginSignUp_link.click();
         System.out.println("Login link clicked");
-        LoginPage.mobileNo_input.sendKeys(mobile_No);
+        LoginPage.mobileNo_input.sendKeys(mobile_no);
         LoginPage.otp_button.click();
+        LoginPage.otp_input.sendKeys(String.valueOf(getOTP()));
+        LoginPage.loginasBuyer_button.click();
+        Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
+        LoginPage.manage_profile.click();
+        Assert.assertTrue("Manage Profile Page is not displayed", LoginPage.manage_profile_page.isDisplayed());
+        LoginPage.shop_name_input.sendKeys(prop.getProperty("Shop_name"));
+        String manage_profile_phone_no = LoginPage.phone_no_input.getAttribute("value").substring(3);
+        Assert.assertEquals("Manage Profile Phone No mismatch", mobile_no, manage_profile_phone_no);
+        LoginPage.new_password_input.sendKeys(password);
+        LoginPage.confirm_password_input.sendKeys(password);
+        LoginPage.update_profile_button.click();
+        Assert.assertTrue("Profile Updated message not displayed", LoginPage.profile_update_msg.isDisplayed());
+        LoginPage.change_email_id_input.sendKeys(userName);
+        LoginPage.update_email_button.click();
+        Assert.assertTrue("Email Updated message not displayed", LoginPage.update_email_msg.isDisplayed());
+        updateEmailId();
+        LoginPage.logout_link.click();
+        Assert.assertTrue("Logout not happen ", LoginPage.loginSignUp_link.isDisplayed());
+
+
+
     }
 
     @And("Logout from App")
@@ -74,8 +122,8 @@ public class LoginSteps {
     }
 
     @And("Select product")
-    public void select_product() throws InterruptedException {
-        String gst_details,pan_details,name,address,postal_code,city,state,country,phone;
+    public void select_product() throws InterruptedException, SQLException, IOException {
+        String gst_details, pan_details, name, address, postal_code, city, state, country, phone;
         LoginPage.allProduct_link.click();
         Thread.sleep(1000);
         wait.until(ExpectedConditions.visibilityOf(LoginPage.product_image)).click();
@@ -88,15 +136,15 @@ public class LoginSteps {
         Thread.sleep(1000);
         LoginPage.continueShipping_button.click();
         Assert.assertTrue("2. Shipping info not displayed or name changed", LoginPage.phase.getText().equals("2. Shipping info"));
-        gst_details= LoginPage.GST_no.getText();
+        gst_details = LoginPage.GST_no.getText();
         pan_details = LoginPage.PAN_no.getText();
-         name = LoginPage.name.getText();
-         address = LoginPage.address.getText();
+        name = LoginPage.name.getText();
+        address = LoginPage.address.getText();
         postal_code = LoginPage.postal_code.getText();
-         city = LoginPage.city.getText();
-         state = LoginPage.state.getText();
+        city = LoginPage.city.getText();
+        state = LoginPage.state.getText();
         country = LoginPage.country.getText();
-         phone = LoginPage.phone.getText();
+        phone = LoginPage.phone.getText();
         Assert.assertEquals("GST number mismatch", prop.getProperty("GST"), gst_details.replaceAll("GST Number :", "").trim());
         Assert.assertEquals("PAN number mismatch", prop.getProperty("PAN"), pan_details.replaceAll("PAN Number :", "").trim());
         Assert.assertEquals("Name mismatch", prop.getProperty("Name"), name.trim());
@@ -113,19 +161,48 @@ public class LoginSteps {
         LoginPage.complete_order_button.click();
         Assert.assertTrue("4.Confirmation step not displayed or name changed", LoginPage.phase.getText().equals("4. Confirmation"));
 
+
     }
 
-    public static void main(String[] args) throws IOException, SQLException {
-        MySqlDB sql= new MySqlDB();
-        ResultSet rs=sql.executeQuery("Select * from mobile_verifications as m  where mobile=8898347897;","blumart");
-        while(rs.next())
-        {
-            System.out.println(rs.getString("mobile")+"  "+rs.getInt("otp"));
+    public static String getOTP() throws IOException, SQLException {
+        String OTP = null;
+        MySqlDB sql = new MySqlDB();
+        ResultSet rs = sql.executeQuery("Select * from mobile_verifications as m  where mobile=8898347897;", "blumart");
+        //ResultSet rs = sql.executeQuery("update users set email ='111shivraj@gmail.com' where name='Auto_test';", "blumart");
+        while (rs.next()) {
+            System.out.println(rs.getString("mobile") + "  " + rs.getInt("otp"));
+            OTP = rs.getString("otp");
         }
+        rs.close();
+        sql.closeConnection();
+        return OTP;
+    }
+
+    public static void updateEmailId() throws IOException, SQLException {
+        MySqlDB sql = new MySqlDB();
+        //ResultSet rs = sql.executeQuery("Select","Select * from mobile_verifications as m  where mobile=8898347897;", "blumart");
+        int i = sql.updateQuery("update users set email ='111shivraj@gmail.com' where name='Auto_test';", "blumart");
+        System.out.println("Update Query return value : " + i);
         sql.closeConnection();
     }
 
+    public static void main(String[] args) throws IOException, SQLException {
+        System.out.println(getOTP());
+        String phone = "+918898347897";
+        System.out.println(phone.substring(3));
 
+    }
 
+    public void adminLogin(String username, String password) throws InterruptedException {
+        driver.get(prop.getProperty("BaseURL") + "login");
+        PageFactory.initElements(driver, LoginPage.class);
+        LoginPage.email_input.sendKeys(username);
+        LoginPage.password_input.sendKeys(password);
+        LoginPage.rememberMe_checkBox.click();
+        LoginPage.login_button.click();
+        Thread.sleep(3000);
+        Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
+        Thread.sleep(1000);
+    }
 
 }
