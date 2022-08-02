@@ -18,23 +18,17 @@ Feature: Buyer functionality
       | Username             | Password          |
       | 111shivraj@gmail.com | ShivAnsh@22111995 |
 
-@Test
-  Scenario Outline: Verification of registration and unregistration functionality
-#    Given Login "Admin" app with <Username> and <Password>
 
-
-    Examples:
-      | Username         | Password  |
-      | admin@blumart.in | Admin@123 |
-
-
+#------Validation of GST API pending
   @Test_1
   Scenario Outline: Verification of registration and unregistration functionality
     Given Registration of "Buyer" app using <Mobile_no> , <Username> and <Password>
+    And Login "Buyer" app with <Username> and <Password>
+    And Select product for <Pin>
     And Unregistration of "Buyer" using <Mobile_no> on "Admin" app
 
     Examples:
-      | Mobile_no  | Username             | Password |
-      | 8898347897 | 111shivraj@gmail.com | Test1    |
+      | Mobile_no  | Username             | Password | Pin    |
+      | 8898347897 | 111shivraj@gmail.com | Test1    | 400078 |
 
 

@@ -65,6 +65,8 @@ public class LoginPage extends BaseClass {
     @FindBy(how = How.XPATH, using = "//div[@id='delete-modal' and @class='modal fade show']//a[text()='Delete']")
     public static WebElement admin_search_delete_button;
 
+    @FindBy(how = How.XPATH, using = "//span[text()='Buyer has been deleted successfully']")
+    public static WebElement buyer_deleted_msg;
     @FindBy(how = How.XPATH, using = "//button[text()='Update Email']")
     public static WebElement update_email_button;
 
