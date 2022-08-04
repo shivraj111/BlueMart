@@ -111,62 +111,47 @@ public class LoginSteps {
         Assert.assertTrue("Logout not happen ", LoginPage.loginSignUp_link.isDisplayed());
     }
 
-    @And("^Select product for (.*)$")
-    public void select_product(String pin_no) throws InterruptedException, SQLException, IOException {
+    @And("^Buyer buying product of (.*) for \"([^\"]*)\" time")
+    public void select_product(String pin_no,String noOfTimes) throws InterruptedException, SQLException, IOException {
         String gst_details, pan_details, name, address, postal_code, city, state, country, phone;
         LoginPage.allProduct_link.click();
-        //--Pin code selection
-        driver.findElement(By.xpath("//span[text()='400001']")).click();
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//span[@class='select2 select2-container select2-container--default']//span[text()='Enter pincode']")).click();
-        driver.findElement(By.xpath("//span[@class='select2-container select2-container--default select2-container--open']//input[@aria-label='Search']")).sendKeys("400078");
-        driver.findElement(By.xpath("//li[text()='"+pin_no+"']")).click();
-        Thread.sleep(2000);
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//span[text()='400078']"))));
+        if(noOfTimes.equalsIgnoreCase("First")) {
+            //--Pin code selection
+            driver.findElement(By.xpath("//span[text()='400001']")).click();
+            Thread.sleep(1000);
+            driver.findElement(By.xpath("//span[@class='select2 select2-container select2-container--default']//span[text()='Enter pincode']")).click();
+            driver.findElement(By.xpath("//span[@class='select2-container select2-container--default select2-container--open']//input[@aria-label='Search']")).sendKeys("400078");
+            driver.findElement(By.xpath("//li[text()='" + pin_no + "']")).click();
+            Thread.sleep(2000);
+        }
+        Assert.assertTrue("Expected Pin no not reflected",driver.findElement(By.xpath("//span[text()='"+pin_no+"']")).isDisplayed());
+        //wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//span[text()='400078']"))));
         wait.until(ExpectedConditions.visibilityOf(LoginPage.product_image)).click();
         Thread.sleep(1000);
         wait.until(ExpectedConditions.visibilityOf(LoginPage.buyNow_button)).click();
         Thread.sleep(1000);
         wait.until(ExpectedConditions.visibilityOf(LoginPage.phase));
 
+
         Assert.assertTrue("My Cart not displayed or name changed ", LoginPage.phase.getText().equals("1. My Cart"));
         Thread.sleep(1000);
         LoginPage.continueShipping_button.click();
         Assert.assertTrue("2. Shipping info not displayed or name changed", LoginPage.phase.getText().equals("2. Shipping info"));
-
-        //-------Below code if alredy added address
-        /*gst_details = LoginPage.GST_no.getText();
-        pan_details = LoginPage.PAN_no.getText();
-        name = LoginPage.name.getText();
-        address = LoginPage.address.getText();
-        postal_code = LoginPage.postal_code.getText();
-        city = LoginPage.city.getText();
-        state = LoginPage.state.getText();
-        country = LoginPage.country.getText();
-        phone = LoginPage.phone.getText();
-        Assert.assertEquals("GST number mismatch", prop.getProperty("GST"), gst_details.replaceAll("GST Number :", "").trim());
-        Assert.assertEquals("PAN number mismatch", prop.getProperty("PAN"), pan_details.replaceAll("PAN Number :", "").trim());
-        Assert.assertEquals("Name mismatch", prop.getProperty("Name"), name.trim());
-        Assert.assertEquals("Address mismatch", prop.getProperty("Address"), address.trim());
-        Assert.assertEquals("Post Code mismatch", prop.getProperty("Postal_code"), postal_code.trim());
-        Assert.assertEquals("City mismatch", prop.getProperty("City"), city.trim());
-        Assert.assertEquals("State mismatch", prop.getProperty("State"), state.trim());
-        Assert.assertEquals("Country mismatch", prop.getProperty("Country"), country.trim());
-        Assert.assertEquals("Phone mismatch", prop.getProperty("Phone"), phone.trim());
-    */
-        driver.findElement(By.xpath("//div[@onclick='add_new_address()']/div[text()='Add New Address']")).click();
-        Assert.assertTrue("New Address pop up not displayed", driver.findElement(By.xpath("//div[@class='modal fade show']//h5[text()='New Address']")).isDisplayed());
-        driver.findElement(By.xpath("//input[@name='full_name']")).sendKeys(prop.getProperty("Name"));
-        driver.findElement(By.xpath("//input[@id='shop_name']")).sendKeys(prop.getProperty("Shop_name"));
-        driver.findElement(By.xpath("//input[@id='gst_number']")).sendKeys(prop.getProperty("GST"));
-        driver.findElement(By.xpath("//input[@id='pan_number']")).sendKeys(prop.getProperty("PAN"));
-        Thread.sleep(5000);
-        Assert.assertEquals("Incorrect Pin code fetched with provided GST", "400078", driver.findElement(By.xpath("//span[@id='select2-pincode-container']")).getText());
-        driver.findElement(By.xpath("//input[@id='phone']")).sendKeys(prop.getProperty("Phone"));
         Thread.sleep(2000);
-        driver.findElement(By.xpath("//button[@id='submit_btn' and text()='Save']")).click();
-
-        //----Validate the details are reflected correctly
+        if(noOfTimes.equalsIgnoreCase("First")) {
+            driver.findElement(By.xpath("//div[@onclick='add_new_address()']/div[text()='Add New Address']")).click();
+            Assert.assertTrue("New Address pop up not displayed", driver.findElement(By.xpath("//div[@class='modal fade show']//h5[text()='New Address']")).isDisplayed());
+            driver.findElement(By.xpath("//input[@name='full_name']")).sendKeys(prop.getProperty("Name"));
+            driver.findElement(By.xpath("//input[@id='shop_name']")).sendKeys(prop.getProperty("Shop_name"));
+            driver.findElement(By.xpath("//input[@id='gst_number']")).sendKeys(prop.getProperty("GST"));
+            driver.findElement(By.xpath("//input[@id='pan_number']")).sendKeys(prop.getProperty("PAN"));
+            Thread.sleep(5000);
+            Assert.assertEquals("Incorrect Pin code fetched with provided GST", "400078", driver.findElement(By.xpath("//span[@id='select2-pincode-container']")).getText());
+            driver.findElement(By.xpath("//input[@id='phone']")).sendKeys(prop.getProperty("Phone"));
+            Thread.sleep(2000);
+            driver.findElement(By.xpath("//button[@id='submit_btn' and text()='Save']")).click();
+        }
+         //-------Below code if alredy added address
         gst_details = LoginPage.GST_no.getText();
         pan_details = LoginPage.PAN_no.getText();
         name = LoginPage.name.getText();

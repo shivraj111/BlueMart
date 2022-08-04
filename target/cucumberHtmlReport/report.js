@@ -23,7 +23,15 @@ formatter.step({
   "keyword": "And "
 });
 formatter.step({
-  "name": "Select product for \u003cPin\u003e",
+  "name": "Buyer buying product of \u003cPin code\u003e for \"First\" time",
+  "keyword": "And "
+});
+formatter.step({
+  "name": "Login \"Buyer\" app with \u003cUsername\u003e and \u003cPassword\u003e",
+  "keyword": "And "
+});
+formatter.step({
+  "name": "Buyer buying product of \u003cPin code\u003e for \"Second\" time",
   "keyword": "And "
 });
 formatter.step({
@@ -40,7 +48,7 @@ formatter.examples({
         "Mobile_no",
         "Username",
         "Password",
-        "Pin"
+        "Pin code"
       ]
     },
     {
@@ -87,11 +95,31 @@ formatter.result({
   "status": "passed"
 });
 formatter.step({
-  "name": "Select product for 400078",
+  "name": "Buyer buying product of 400078 for \"First\" time",
   "keyword": "And "
 });
 formatter.match({
-  "location": "LoginSteps.select_product(String)"
+  "location": "LoginSteps.select_product(String,String)"
+});
+formatter.result({
+  "status": "passed"
+});
+formatter.step({
+  "name": "Login \"Buyer\" app with 111shivraj@gmail.com and Test1",
+  "keyword": "And "
+});
+formatter.match({
+  "location": "LoginSteps.login_application_with(String,String,String)"
+});
+formatter.result({
+  "status": "passed"
+});
+formatter.step({
+  "name": "Buyer buying product of 400078 for \"Second\" time",
+  "keyword": "And "
+});
+formatter.match({
+  "location": "LoginSteps.select_product(String,String)"
 });
 formatter.result({
   "status": "passed"
