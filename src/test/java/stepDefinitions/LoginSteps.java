@@ -14,6 +14,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageobjects.LoginPage;
+import pageobjects.SellerPage;
 import stepDefinitions.setUp.BrowserSetup;
 
 import java.io.IOException;
@@ -79,7 +80,7 @@ public class LoginSteps {
 
     }
 
-    @Given("^Registration of \"([^\"]*)\" app using (.*) , (.*) , (.*) , (.*) , (.*) and (.*)$")
+    @Given("^Registration of \"([^\"]*)\" application using (.*) , (.*) , (.*) , (.*) , (.*) and (.*)$")
     public void registration_of_app_using_GST_PAN_Seller_Name_Email_id_and_Test(String appName, String mobile_no, String GST,String PAN,String sellerName,String email_id,String password) {
 
 
@@ -259,15 +260,20 @@ public class LoginSteps {
 
     }
 
-    public void seller_registration(String appName, String mobile_no, String userName, String password) throws SQLException, IOException, InterruptedException {
+    public void seller_registration(String appName, String mobile_no, String GST,String PAN,String sellerName,String email_id,String password) throws SQLException, IOException, InterruptedException {
         driver.get(prop.getProperty("BaseURL"));
-        PageFactory.initElements(driver, LoginPage.class);
-        LoginPage.loginSignUp_link.click();
-        System.out.println("Login link clicked");
-        LoginPage.mobileNo_input.sendKeys(mobile_no);
-        LoginPage.otp_button.click();
-        LoginPage.otp_input.sendKeys(String.valueOf(getOTP()));
-        LoginPage.loginasBuyer_button.click();
+        PageFactory.initElements(driver, SellerPage.class);
+        SellerPage.beaSeller_link.click();
+        System.out.println("Be a Seller link clicked");
+        Assert.assertTrue("Seller Registration Page is not displayed", SellerPage.seller_registration_page.isDisplayed());
+        SellerPage.seller_name.sendKeys(sellerName);
+        Seller
+
+
+
+
+        //LoginPage.otp_input.sendKeys(String.valueOf(getOTP()));
+
         Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
         //((JavascriptExecutor) driver).executeScript("window.scrollBy(0,250)");
         //Actions act= new Actions(driver);
@@ -285,7 +291,7 @@ public class LoginSteps {
         LoginPage.update_profile_button.click();
         Assert.assertTrue("Profile Updated message not displayed", LoginPage.profile_update_msg.isDisplayed());
         LoginPage.change_email_id_input.clear();
-        LoginPage.change_email_id_input.sendKeys(userName);
+       // LoginPage.change_email_id_input.sendKeys(userName);
         LoginPage.update_email_button.click();
         Assert.assertTrue("Email Updated message not displayed", LoginPage.update_email_msg.isDisplayed());
         updateEmailId("blumart");
