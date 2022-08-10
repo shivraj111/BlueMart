@@ -81,9 +81,8 @@ public class LoginSteps {
     }
 
     @Given("^Registration of \"([^\"]*)\" application using (.*) , (.*) , (.*) , (.*) , (.*) and (.*)$")
-    public void registration_of_app_using_GST_PAN_Seller_Name_Email_id_and_Test(String appName, String mobile_no, String GST,String PAN,String sellerName,String email_id,String password) {
-
-
+    public void registration_of_app_using_GST_PAN_Seller_Name_Email_id_and_Test(String appName, String mobile_no, String GST, String PAN, String sellerName, String email_id, String password) throws SQLException, IOException, InterruptedException {
+        seller_registration(appName, mobile_no, GST, PAN, sellerName, email_id, password);
 
     }
 
@@ -165,10 +164,10 @@ public class LoginSteps {
 
     }
 
-    public static String getOTP() throws IOException, SQLException {
+    public static String getOTP(String mobile_no) throws IOException, SQLException {
         String OTP = null;
         MySqlDB sql = new MySqlDB();
-        ResultSet rs = sql.executeQuery("Select * from mobile_verifications as m  where mobile=8898347897;", "blumart");
+        ResultSet rs = sql.executeQuery("Select * from mobile_verifications as m  where mobile=" + mobile_no + ";", "blumart");
         //ResultSet rs = sql.executeQuery("update users set email ='111shivraj@gmail.com' where name='Auto_test';", "blumart");
         while (rs.next()) {
             System.out.println(rs.getString("mobile") + "  " + rs.getInt("otp"));
@@ -183,12 +182,12 @@ public class LoginSteps {
         MySqlDB sql = new MySqlDB();
         //ResultSet rs = sql.executeQuery("Select","Select * from mobile_verifications as m  where mobile=8898347897;", "");
         int i = sql.updateQuery(prop.getProperty("update_Email_id"), dbName);
-        Assert.assertNotEquals("Update Query return value : " + i,0,i);
+        Assert.assertNotEquals("Update Query return value : " + i, 0, i);
         sql.closeConnection();
     }
 
     public static void main(String[] args) throws IOException, SQLException {
-        System.out.println(getOTP());
+        //System.out.println(getOTP());
         String phone = "+918898347897";
         System.out.println(phone.substring(3));
 
@@ -230,7 +229,7 @@ public class LoginSteps {
         System.out.println("Login link clicked");
         LoginPage.mobileNo_input.sendKeys(mobile_no);
         LoginPage.otp_button.click();
-        LoginPage.otp_input.sendKeys(String.valueOf(getOTP()));
+        LoginPage.otp_input.sendKeys(String.valueOf(getOTP(mobile_no)));
         LoginPage.loginasBuyer_button.click();
         Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
         //((JavascriptExecutor) driver).executeScript("window.scrollBy(0,250)");
@@ -260,49 +259,51 @@ public class LoginSteps {
 
     }
 
-    public void seller_registration(String appName, String mobile_no, String GST,String PAN,String sellerName,String email_id,String password) throws SQLException, IOException, InterruptedException {
+    public void seller_registration(String appName, String mobile_no, String GST, String PAN, String sellerName, String email_id, String password) throws SQLException, IOException, InterruptedException {
+        String Company_name, pan_details, shop_mobile_no, company_address, postal_code, city, state, country, phone;
         driver.get(prop.getProperty("BaseURL"));
         PageFactory.initElements(driver, SellerPage.class);
         SellerPage.beaSeller_link.click();
         System.out.println("Be a Seller link clicked");
         Assert.assertTrue("Seller Registration Page is not displayed", SellerPage.seller_registration_page.isDisplayed());
         SellerPage.seller_name.sendKeys(sellerName);
-        Seller
-
-
-
-
-        //LoginPage.otp_input.sendKeys(String.valueOf(getOTP()));
-
-        Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
-        //((JavascriptExecutor) driver).executeScript("window.scrollBy(0,250)");
-        //Actions act= new Actions(driver);
-        //act.moveToElement(LoginPage.manage_profile).click().build().perform();
-        //PageFactory.initElements(driver, LoginPage.class);
+        SellerPage.mobile_no.sendKeys(mobile_no);
+        SellerPage.mobile_no.sendKeys(Keys.ENTER);
         Thread.sleep(1000);
-        LoginPage.manage_profile.click();
-        Assert.assertTrue("Manage Profile Page is not displayed", LoginPage.manage_profile_page.isDisplayed());
-        LoginPage.shop_name_input.clear();
-        LoginPage.shop_name_input.sendKeys(prop.getProperty("Shop_name"));
-        String manage_profile_phone_no = LoginPage.phone_no_input.getAttribute("value").substring(3);
-        Assert.assertEquals("Manage Profile Phone No mismatch", mobile_no, manage_profile_phone_no);
-        LoginPage.new_password_input.sendKeys(password);
-        LoginPage.confirm_password_input.sendKeys(password);
-        LoginPage.update_profile_button.click();
-        Assert.assertTrue("Profile Updated message not displayed", LoginPage.profile_update_msg.isDisplayed());
-        LoginPage.change_email_id_input.clear();
-       // LoginPage.change_email_id_input.sendKeys(userName);
-        LoginPage.update_email_button.click();
-        Assert.assertTrue("Email Updated message not displayed", LoginPage.update_email_msg.isDisplayed());
-        updateEmailId("blumart");
+        SellerPage.send_OTP_button.click();
         Thread.sleep(1000);
-        LoginPage.logout_link.click();
-        Assert.assertTrue("Logout not happen ", LoginPage.loginSignUp_link.isDisplayed());
+        SellerPage.otp_input.sendKeys(String.valueOf(getOTP(mobile_no)));
+        Thread.sleep(1000);
+        SellerPage.email_input.sendKeys(email_id);
+        SellerPage.password_input.sendKeys(password);
+        SellerPage.confirm_password_input.sendKeys(password);
+        SellerPage.next_button.click();
+        wait.until(ExpectedConditions.visibilityOf(SellerPage.account_company_progressbar));
+        SellerPage.gst_input.sendKeys(GST);
+        SellerPage.fetch_button.click();
+        wait.until(ExpectedConditions.visibilityOf(SellerPage.company_name));
+        //-------Below code if alredy added address
+        Company_name = SellerPage.company_name.getText();
+        shop_mobile_no = SellerPage.shop_mobile_no.getText();
+        company_address = SellerPage.company_address.getText();
+        postal_code = SellerPage.pincode.getText();
+       /* Assert.assertEquals("Company name mismatch", prop.getProperty("Seller.Company_name"), Company_name);
+        Assert.assertEquals("Mobile number mismatch", mobile_no, shop_mobile_no);
+        Assert.assertEquals(" Company_address mismatch", prop.getProperty("Seller.Company_address"), company_address);
+        Assert.assertEquals("Post Code mismatch", prop.getProperty("Seller.Pincode"), postal_code);
+        */SellerPage.agree_checkBox.click();
+        Thread.sleep(2000);
+        SellerPage.previous_button.click();
+        Thread.sleep(2000);
+        wait.until(ExpectedConditions.visibilityOf(SellerPage.next_button)).click();
+        Thread.sleep(2000);
+        wait.until(ExpectedConditions.visibilityOf(SellerPage.previous_button));
+        Thread.sleep(2000);
+        SellerPage.finish_button.click();
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//a[text()='Logout']"))));
 
 
     }
-
-
 
 
 }
