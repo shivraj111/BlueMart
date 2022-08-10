@@ -6,8 +6,10 @@ import cucumber.api.java.en.Given;
 import helpers.MySqlDB;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -73,10 +75,16 @@ public class LoginSteps {
     @Given("^Registration of \"([^\"]*)\" app using (.*) , (.*) and (.*)$")
     public void registration_of_app_using(String appName, String mobile_no, String userName, String password) throws SQLException, IOException, InterruptedException {
 
-        buyer_registration(appName,mobile_no,userName,password);
+        buyer_registration(appName, mobile_no, userName, password);
+
     }
 
+    @Given("^Registration of \"([^\"]*)\" app using (.*) , (.*) , (.*) , (.*) , (.*) and (.*)$")
+    public void registration_of_app_using_GST_PAN_Seller_Name_Email_id_and_Test(String appName, String mobile_no, String GST,String PAN,String sellerName,String email_id,String password) {
 
+
+
+    }
 
 
     @And("Logout from App")
@@ -86,10 +94,10 @@ public class LoginSteps {
     }
 
     @And("^Buyer buying product of (.*) for \"([^\"]*)\" time")
-    public void select_product(String pin_no,String noOfTimes) throws InterruptedException, SQLException, IOException {
+    public void select_product(String pin_no, String noOfTimes) throws InterruptedException, SQLException, IOException {
         String gst_details, pan_details, name, address, postal_code, city, state, country, phone;
         LoginPage.allProduct_link.click();
-        if(noOfTimes.equalsIgnoreCase("First")) {
+        if (noOfTimes.equalsIgnoreCase("First")) {
             //--Pin code selection
             driver.findElement(By.xpath("//span[text()='400001']")).click();
             Thread.sleep(1000);
@@ -98,7 +106,7 @@ public class LoginSteps {
             driver.findElement(By.xpath("//li[text()='" + pin_no + "']")).click();
             Thread.sleep(2000);
         }
-        Assert.assertTrue("Expected Pin no not reflected",driver.findElement(By.xpath("//span[text()='"+pin_no+"']")).isDisplayed());
+        Assert.assertTrue("Expected Pin no not reflected", driver.findElement(By.xpath("//span[text()='" + pin_no + "']")).isDisplayed());
         //wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//span[text()='400078']"))));
         wait.until(ExpectedConditions.visibilityOf(LoginPage.product_image)).click();
         Thread.sleep(1000);
@@ -112,7 +120,7 @@ public class LoginSteps {
         LoginPage.continueShipping_button.click();
         Assert.assertTrue("2. Shipping info not displayed or name changed", LoginPage.phase.getText().equals("2. Shipping info"));
         Thread.sleep(2000);
-        if(noOfTimes.equalsIgnoreCase("First")) {
+        if (noOfTimes.equalsIgnoreCase("First")) {
             driver.findElement(By.xpath("//div[@onclick='add_new_address()']/div[text()='Add New Address']")).click();
             Assert.assertTrue("New Address pop up not displayed", driver.findElement(By.xpath("//div[@class='modal fade show']//h5[text()='New Address']")).isDisplayed());
             driver.findElement(By.xpath("//input[@name='full_name']")).sendKeys(prop.getProperty("Name"));
@@ -125,7 +133,7 @@ public class LoginSteps {
             Thread.sleep(2000);
             driver.findElement(By.xpath("//button[@id='submit_btn' and text()='Save']")).click();
         }
-         //-------Below code if alredy added address
+        //-------Below code if alredy added address
         gst_details = LoginPage.GST_no.getText();
         pan_details = LoginPage.PAN_no.getText();
         name = LoginPage.name.getText();
@@ -170,11 +178,11 @@ public class LoginSteps {
         return OTP;
     }
 
-    public static void updateEmailId() throws IOException, SQLException {
+    public void updateEmailId(String dbName) throws IOException, SQLException {
         MySqlDB sql = new MySqlDB();
-        //ResultSet rs = sql.executeQuery("Select","Select * from mobile_verifications as m  where mobile=8898347897;", "blumart");
-        int i = sql.updateQuery("update users set email ='111shivraj@gmail.com' where name='Auto_test';", "blumart");
-        System.out.println("Update Query return value : " + i);
+        //ResultSet rs = sql.executeQuery("Select","Select * from mobile_verifications as m  where mobile=8898347897;", "");
+        int i = sql.updateQuery(prop.getProperty("update_Email_id"), dbName);
+        Assert.assertNotEquals("Update Query return value : " + i,0,i);
         sql.closeConnection();
     }
 
@@ -224,6 +232,11 @@ public class LoginSteps {
         LoginPage.otp_input.sendKeys(String.valueOf(getOTP()));
         LoginPage.loginasBuyer_button.click();
         Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
+        //((JavascriptExecutor) driver).executeScript("window.scrollBy(0,250)");
+        //Actions act= new Actions(driver);
+        //act.moveToElement(LoginPage.manage_profile).click().build().perform();
+        //PageFactory.initElements(driver, LoginPage.class);
+        Thread.sleep(1000);
         LoginPage.manage_profile.click();
         Assert.assertTrue("Manage Profile Page is not displayed", LoginPage.manage_profile_page.isDisplayed());
         LoginPage.shop_name_input.clear();
@@ -238,13 +251,52 @@ public class LoginSteps {
         LoginPage.change_email_id_input.sendKeys(userName);
         LoginPage.update_email_button.click();
         Assert.assertTrue("Email Updated message not displayed", LoginPage.update_email_msg.isDisplayed());
-        updateEmailId();
+        updateEmailId("blumart");
         Thread.sleep(1000);
         LoginPage.logout_link.click();
         Assert.assertTrue("Logout not happen ", LoginPage.loginSignUp_link.isDisplayed());
 
 
     }
+
+    public void seller_registration(String appName, String mobile_no, String userName, String password) throws SQLException, IOException, InterruptedException {
+        driver.get(prop.getProperty("BaseURL"));
+        PageFactory.initElements(driver, LoginPage.class);
+        LoginPage.loginSignUp_link.click();
+        System.out.println("Login link clicked");
+        LoginPage.mobileNo_input.sendKeys(mobile_no);
+        LoginPage.otp_button.click();
+        LoginPage.otp_input.sendKeys(String.valueOf(getOTP()));
+        LoginPage.loginasBuyer_button.click();
+        Assert.assertTrue("DashBoard Page is not displayed", LoginPage.dashBoard_page.isDisplayed());
+        //((JavascriptExecutor) driver).executeScript("window.scrollBy(0,250)");
+        //Actions act= new Actions(driver);
+        //act.moveToElement(LoginPage.manage_profile).click().build().perform();
+        //PageFactory.initElements(driver, LoginPage.class);
+        Thread.sleep(1000);
+        LoginPage.manage_profile.click();
+        Assert.assertTrue("Manage Profile Page is not displayed", LoginPage.manage_profile_page.isDisplayed());
+        LoginPage.shop_name_input.clear();
+        LoginPage.shop_name_input.sendKeys(prop.getProperty("Shop_name"));
+        String manage_profile_phone_no = LoginPage.phone_no_input.getAttribute("value").substring(3);
+        Assert.assertEquals("Manage Profile Phone No mismatch", mobile_no, manage_profile_phone_no);
+        LoginPage.new_password_input.sendKeys(password);
+        LoginPage.confirm_password_input.sendKeys(password);
+        LoginPage.update_profile_button.click();
+        Assert.assertTrue("Profile Updated message not displayed", LoginPage.profile_update_msg.isDisplayed());
+        LoginPage.change_email_id_input.clear();
+        LoginPage.change_email_id_input.sendKeys(userName);
+        LoginPage.update_email_button.click();
+        Assert.assertTrue("Email Updated message not displayed", LoginPage.update_email_msg.isDisplayed());
+        updateEmailId("blumart");
+        Thread.sleep(1000);
+        LoginPage.logout_link.click();
+        Assert.assertTrue("Logout not happen ", LoginPage.loginSignUp_link.isDisplayed());
+
+
+    }
+
+
 
 
 }

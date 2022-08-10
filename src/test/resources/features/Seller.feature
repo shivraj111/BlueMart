@@ -2,7 +2,7 @@ Feature: Seller functionality
 
   @Test_2
   Scenario Outline: Verification of registration functionality
-    Given Registration of "Seller" app using <Mobile_no> , <GST> , <Password> , <>
+    Given Registration of "Seller" app using <Mobile_no> , <GST> , <PAN> , <Seller_Name> , <Email_id> and <Password>
     And Login "Buyer" app with <Username> and <Password>
     And Buyer buying product of <Pin code> for "First" time
     And Login "Buyer" app with <Username> and <Password>
