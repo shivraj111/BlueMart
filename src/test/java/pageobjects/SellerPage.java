@@ -71,7 +71,24 @@ public class SellerPage extends BaseClass {
 
     @FindBy(how = How.XPATH, using = "//form[@id='msform']//input[@value='Finish']")
     public static WebElement finish_button;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='swal-modal']/div[@class='swal-text']")
+    public static WebElement registration_error_msg;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='swal-modal']/div//button[text()='OK']")
+    public static WebElement ok_button;
+
+    @FindBy(how = How.XPATH, using = "//input[@name='mobile']/following-sibling::span")
+    public static WebElement mobile_label_error;
+
+    @FindBy(how = How.XPATH, using = "//input[@name='gst']/following-sibling::span")
+    public static WebElement GST_label_error;
+
+
     public SellerPage(WebDriver driver) {
         super(driver);
     }
+
+
+
 }

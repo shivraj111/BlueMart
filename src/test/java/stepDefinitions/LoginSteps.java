@@ -80,15 +80,16 @@ public class LoginSteps {
 
     }
 
-    @Given("^Registration of \"([^\"]*)\" application using (.*) , (.*) , (.*) , (.*) , (.*) and (.*)$")
-    public void registration_of_app_using_GST_PAN_Seller_Name_Email_id_and_Test(String appName, String mobile_no, String GST, String PAN, String sellerName, String email_id, String password) throws SQLException, IOException, InterruptedException {
-        seller_registration(appName, mobile_no, GST, PAN, sellerName, email_id, password);
+    @Given("^Registration of \"([^\"]*)\" using (.*) , (.*) , (.*) , (.*) and (.*)$")
+    public void registration_of_app_using_GST_PAN_Seller_Name_Email_id_and_Test(String appName, String mobile_no, String GST, String sellerName, String email_id, String password) throws SQLException, IOException, InterruptedException {
+        seller_registration(appName, mobile_no, GST, sellerName, email_id, password);
 
     }
 
 
     @And("Logout from App")
     public void reset_the_credential() {
+        PageFactory.initElements(driver, LoginPage.class);
         LoginPage.logout_link.click();
         Assert.assertTrue("Logout not happen ", LoginPage.loginSignUp_link.isDisplayed());
     }
@@ -97,6 +98,14 @@ public class LoginSteps {
     public void select_product(String pin_no, String noOfTimes) throws InterruptedException, SQLException, IOException {
         String gst_details, pan_details, name, address, postal_code, city, state, country, phone;
         LoginPage.allProduct_link.click();
+
+        //Search with Products
+        /*LoginPage.product_search.sendKeys("Amulya Dairy Whitener");
+        Thread.sleep(6000);
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//div[@id='search-content']//li[@class='list-group-item']//div[contains(text(),'Amulya Dairy Whitener')]"))));
+        driver.findElement(By.xpath("//div[@id='search-content']//li[@class='list-group-item']//div[contains(text(),'Amulya Dairy Whitener')]")).click();
+*/
+
         if (noOfTimes.equalsIgnoreCase("First")) {
             //--Pin code selection
             driver.findElement(By.xpath("//span[text()='400001']")).click();
@@ -159,8 +168,9 @@ public class LoginSteps {
         LoginPage.agree_checkBox.click();
         LoginPage.complete_order_button.click();
         Assert.assertTrue("4.Confirmation step not displayed or name changed", LoginPage.phase.getText().equals("4. Confirmation"));
-        LoginPage.logout_link.click();
+        /*LoginPage.logout_link.click();
         Assert.assertTrue("Logout not happen ", LoginPage.loginSignUp_link.isDisplayed());
+*/
 
     }
 
@@ -177,6 +187,8 @@ public class LoginSteps {
         sql.closeConnection();
         return OTP;
     }
+
+
 
     public void updateEmailId(String dbName) throws IOException, SQLException {
         MySqlDB sql = new MySqlDB();
@@ -259,8 +271,8 @@ public class LoginSteps {
 
     }
 
-    public void seller_registration(String appName, String mobile_no, String GST, String PAN, String sellerName, String email_id, String password) throws SQLException, IOException, InterruptedException {
-        String Company_name, pan_details, shop_mobile_no, company_address, postal_code, city, state, country, phone;
+    public void seller_registration(String appName, String mobile_no, String GST, String sellerName, String email_id, String password) throws SQLException, IOException, InterruptedException {
+        String Company_name, shop_mobile_no, company_address, postal_code, city, state, country, phone;
         driver.get(prop.getProperty("BaseURL"));
         PageFactory.initElements(driver, SellerPage.class);
         SellerPage.beaSeller_link.click();

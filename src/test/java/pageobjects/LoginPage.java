@@ -119,6 +119,9 @@ public class LoginPage extends BaseClass {
     @FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary']/i[text()='All']")
     public static WebElement allProduct_link;
 
+    @FindBy(how = How.XPATH, using = "//input[@id='search']")
+    public static WebElement product_search;
+
     @FindBy(how = How.XPATH, using = "//div[@class='row aiz-steps arrow-divider']//div[contains(@class,'text-center text-primary')]/h3")
     public static WebElement phase;
 

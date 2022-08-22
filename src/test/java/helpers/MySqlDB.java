@@ -101,6 +101,7 @@ public class MySqlDB {
         //rs.close();
         stmt.close();
         conn.close();
+        System.out.println("Closing DB connection and  statement");
     }
 
 

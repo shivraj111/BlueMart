@@ -22,10 +22,14 @@ Feature: Buyer functionality
 #------Validation of GST API pending
   @Test_1
   Scenario Outline: Verification of registration and unregistration functionality
-    Given Registration of "Buyer" app using <Mobile_no> , <Username> and <Password>
+    #Given Registration of "Buyer" app using <Mobile_no> , <Username> and <Password>
+    #And Login "Buyer" app with <Username> and <Password>
+    #And Buyer buying product of <Pin code> for "First" time
     And Login "Buyer" app with <Username> and <Password>
-    And Buyer buying product of <Pin code> for "First" time
-    And Login "Buyer" app with <Username> and <Password>
+    And Buyer buying product of <Pin code> for "Second" time
+    And Buyer buying product of <Pin code> for "Second" time
+    And Buyer buying product of <Pin code> for "Second" time
+    And Buyer buying product of <Pin code> for "Second" time
     And Buyer buying product of <Pin code> for "Second" time
     #And Unregistration of "Buyer" using <Mobile_no> on "Admin" app
 
