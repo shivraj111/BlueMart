@@ -35,8 +35,8 @@ public class SellerSteps {
         deletequery(mobile_no, getUserID(mobile_no));
     }
 
-    @When("^Another Seller trying to register with already registered (.*) using (.*)$")
-    public void another_Seller_trying_to_register_with_already_registered_using_Auto_Seller(String mobile_no, String name) {
+    @When("^Another Seller trying to register with already registered '(.*)' using '(.*)'$")
+    public void another_Seller_trying_to_register_with_already_Seller(String mobile_no, String name) {
 
         driver.get(prop.getProperty("BaseURL"));
         PageFactory.initElements(driver, SellerPage.class);
@@ -49,7 +49,7 @@ public class SellerSteps {
 
     }
 
-    @When("^Another Seller trying to register with already registered (.*) using different (.*) and (.*)$")
+    @When("Another Seller trying to register with already registered {string} using different {string} and {string}")
     public void another_Seller_trying_to_register_with_already_registered_using_Auto_Seller(String email_id, String new_mobil_no,String name) {
         driver.get(prop.getProperty("BaseURL"));
         PageFactory.initElements(driver, SellerPage.class);
@@ -62,8 +62,8 @@ public class SellerSteps {
 
     }
 
-    @When("^Another Seller trying to register with already registered (.*) using different (.*) , (.*) , (.*) and (.*)$")
-    public void another_Seller_trying_to_register_with_already_registered_using_Auto_Seller(String GST, String new_mobil_no,String new_email_id,String password,String name) throws InterruptedException, SQLException, IOException {
+    @When("Another Seller trying to register with already registered {string} using different {string} , {string} , {string} and {string}")
+    public void another_Seller_trying_to_register_with_already_using_Auto_Seller(String GST, String new_mobil_no,String new_email_id,String password,String name) throws InterruptedException, SQLException, IOException {
         driver.get(prop.getProperty("BaseURL"));
         PageFactory.initElements(driver, SellerPage.class);
         SellerPage.beaSeller_link.click();
@@ -93,7 +93,7 @@ public class SellerSteps {
 
         if(error_msg.contains("Mobile already exist")) {
             wait.until(ExpectedConditions.visibilityOf(SellerPage.registration_error_msg));
-            Assert.assertEquals("Error msg pop up not displayd", error_msg + "!+", SellerPage.registration_error_msg.getText());
+            Assert.assertEquals("Error msg pop up not displayd", error_msg + "!", SellerPage.registration_error_msg.getText());
             Thread.sleep(1000);
             SellerPage.ok_button.click();
             Thread.sleep(1000);
