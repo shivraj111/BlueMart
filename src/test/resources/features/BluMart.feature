@@ -31,7 +31,7 @@ Feature: Buyer functionality
     And Buyer buying product of <Pin code> for "Second" time
     And Buyer buying product of <Pin code> for "Second" time
     And Buyer buying product of <Pin code> for "Second" time
-    #And Unregistration of "Buyer" using <Mobile_no> on "Admin" app
+    And Unregistration of "Buyer" using <Mobile_no> on "Admin" app
 
     Examples:
       | Mobile_no  | Username             | Password | Pin code |

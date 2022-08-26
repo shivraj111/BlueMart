@@ -2,8 +2,8 @@ Feature: Seller functionality
 
   @Test_3
   Scenario Outline: Verification of registration functionality
-    #Given Registration of "Seller" using <Mobile_no> , <GST> , <Seller_Name> , <Email_id> and <Password>
-    And Unregistration of "Seller" through DataBase using <Mobile_no>
+    Given Registration of "Seller" using <Mobile_no> , <GST> , <Seller_Name> , <Email_id> and <Password>
+    #And Unregistration of "Seller" through DataBase using <Mobile_no>
 
 
     Examples:
