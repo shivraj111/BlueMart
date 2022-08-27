@@ -80,7 +80,7 @@ public class LoginSteps {
 
     }
 
-    @Given("^Registration of \"([^\"]*)\" using (.*) , (.*) , (.*) , (.*) and (.*)$")
+    @Given("Registration of {string} using {string} , {string} , {string} , {string} and {string}")
     public void registration_of_app_using_GST_PAN_Seller_Name_Email_id_and_Test(String appName, String mobile_no, String GST, String sellerName, String email_id, String password) throws SQLException, IOException, InterruptedException {
         seller_registration(appName, mobile_no, GST, sellerName, email_id, password);
 

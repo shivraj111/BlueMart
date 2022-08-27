@@ -1,5 +1,6 @@
 package stepDefinitions;
 
+import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -35,7 +36,7 @@ public class SellerSteps {
         deletequery(mobile_no, getUserID(mobile_no));
     }
 
-    @When("^Another Seller trying to register with already registered '(.*)' using '(.*)'$")
+    @When("^Seller trying to register with already registered '(.*)' using '(.*)'$")
     public void another_Seller_trying_to_register_with_already_Seller(String mobile_no, String name) {
 
         driver.get(prop.getProperty("BaseURL"));
@@ -49,8 +50,8 @@ public class SellerSteps {
 
     }
 
-    @When("Another Seller trying to register with already registered {string} using different {string} and {string}")
-    public void another_Seller_trying_to_register_with_already_registered_using_Auto_Seller(String email_id, String new_mobil_no,String name) {
+    @When("Seller trying to register with already registered {string} using different {string} and {string}")
+    public void another_Seller_trying_to_register_with_already_registered_using_Auto_Seller(String email_id, String new_mobil_no,String name) throws InterruptedException, SQLException, IOException {
         driver.get(prop.getProperty("BaseURL"));
         PageFactory.initElements(driver, SellerPage.class);
         SellerPage.beaSeller_link.click();
@@ -59,10 +60,18 @@ public class SellerSteps {
         SellerPage.seller_name.sendKeys(name);
         SellerPage.mobile_no.sendKeys(new_mobil_no);
         SellerPage.mobile_no.sendKeys(Keys.ENTER);
+        Thread.sleep(1000);
+        SellerPage.send_OTP_button.click();
+        Thread.sleep(1000);
+        SellerPage.otp_input.sendKeys(String.valueOf(LoginSteps.getOTP(new_mobil_no)));
+        Thread.sleep(1000);
+        SellerPage.email_input.sendKeys(email_id);
+        SellerPage.mobile_no.sendKeys(Keys.ENTER);
+
 
     }
 
-    @When("Another Seller trying to register with already registered {string} using different {string} , {string} , {string} and {string}")
+    @When("Seller trying to register with already registered {string} using different {string} , {string} , {string} and {string}")
     public void another_Seller_trying_to_register_with_already_using_Auto_Seller(String GST, String new_mobil_no,String new_email_id,String password,String name) throws InterruptedException, SQLException, IOException {
         driver.get(prop.getProperty("BaseURL"));
         PageFactory.initElements(driver, SellerPage.class);
@@ -99,6 +108,12 @@ public class SellerSteps {
             Thread.sleep(1000);
             Assert.assertEquals("Error msg not displayd near mobile no input text box", error_msg, SellerPage.mobile_label_error.getText());
         }
+        else if(error_msg.contains("Email already exist")) {
+            wait.until(ExpectedConditions.visibilityOf(SellerPage.registration_error_msg));
+            Assert.assertEquals("Error msg pop up not displayed", error_msg + "!", SellerPage.registration_error_msg.getText());
+            Thread.sleep(1000);
+            SellerPage.ok_button.click();
+              }
         else if(error_msg.contains("GST number already exist"))
         {
             Thread.sleep(1000);
@@ -120,10 +135,12 @@ public class SellerSteps {
 
         ListIterator<String> it = lst.listIterator();
         while (it.hasNext()) {
-            int i = sql.updateQuery(it.next(), "blumart");
+            String query=it.next();
+            int i = sql.updateQuery(query, "blumart");
             Assert.assertNotEquals("delete Query return value : " + i, 0, i);
+            System.out.println(query + " executed successfully");
         }
-
+        System.out.println("Seller with mobile no: "+mobile_no +" unregistered successfully");
         sql.closeConnection();
     }
 
@@ -139,6 +156,16 @@ public class SellerSteps {
         rs.close();
         sql.closeConnection();
         return id;
+    }
+
+    @After("@Test_3")
+    public void Unregistration() throws Exception {
+        //driver.quit();
+        //driver.close();
+        System.out.println("Tear down method called");
+        SellerSteps obj= new SellerSteps();
+        unregistration_of_through_DataBase_using("Seller","8888888888");
+
     }
 
 

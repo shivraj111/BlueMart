@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import stepDefinitions.SellerSteps;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -37,13 +38,16 @@ public class BrowserSetup {
         InputStream details= new FileInputStream("src//test//resources//details.properties");
         prop=new Properties();
         prop.load(details);
+        //seller_registration("appName", "mobile_no", "GST", "sellerName", "email_id", "password");
     }
+
+
+
 
     @After
     public void tearDown() throws Exception {
-        MySqlDB sql= new MySqlDB();
-        //driver.quit();
-        //driver.close();
+        /*driver.quit();
+        driver.close();*/
 
     }
 

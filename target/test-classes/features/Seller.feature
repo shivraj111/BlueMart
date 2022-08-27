@@ -1,48 +1,71 @@
+@Test_3
 Feature: Seller functionality
 
-  @Test_3
-  Scenario Outline: Verification of registration functionality
-    Given Registration of "Seller" using <Mobile_no> , <GST> , <Seller_Name> , <Email_id> and <Password>
+Background: Seller registration
+    Given Registration of "Seller" using '8888888888' , "27AAZFA3739M1ZM" , "Auto Seller" , "8888888888@gmail.com" and "Test123"
+    And Logout from App
+
+
+  #Scenario Outline: Verification of registration and Unregistration functionality
+    #Given test
+      #Given Registration of "Seller" using '<Mobile_no>' , '<GST>' , '<Seller_Name>' , '<Email_id>' and '<Password>'
     #And Unregistration of "Seller" through DataBase using <Mobile_no>
 
 
+    #Examples:
+     # | Mobile_no  | Email_id             | Password | GST             | Seller_Name |
+      #| 8888888888 | 8888888888@gmail.com | Test123  | 27AAZFA3739M1ZM | Auto Seller |
+
+  @Test_2
+  Scenario Outline: Verification of Seller registration using registered mobile no
+
+    #Given Registration of "Seller" using "<Mobile_no>" , "<GST>" , "<Seller_Name>" , "<Email_id>" and "<Password>"
+    #And Logout from App
+    When Another Seller trying to register with already registered '<Mobile_no>' using '<Seller_Name>'
+    Then Seller should get <mobile_error_msg>
+    When Another Seller trying to register with already registered '<Email_id>' using different '<new_Mobile_no>' and '<Seller_Name>'
+    Then Seller should get <email_error_msg>
+    When Another Seller trying to register with already registered '<GST>' using different '<new_Mobile_no>' , '<new_Email_id>' , '<Password>' and '<Seller_Name>'
+    Then Seller should get <GST_error_msg>
+    #And Unregistration of "Seller" through DataBase using <Mobile_no>
+
     Examples:
-      | Mobile_no  | Email_id             | Password | GST             | Seller_Name |
-      | 8888888888 | 8888888888@gmail.com | Test123  | 27AAZFA3739M1ZM | Auto Seller |
+      | Mobile_no  | Email_id             | new_Mobile_no | GST             | Seller_Name | mobile_error_msg     | Password | new_Email_id         | email_error_msg     | GST_error_msg |
+      | 8888888888 | 8888888888@gmail.com | 9888888888    | 27AAZFA3739M1ZM | Auto Seller | Mobile already exist | Test123  | 9988888888@gmail.com | Email already exist |GST number already exist!               |
 
 
   @Test_2
   Scenario Outline: Verification of Seller registration using registered mobile no
 
-    Given Registration of "Seller" using <Mobile_no> , <GST> , <Seller_Name> , <Email_id> and <Password>
-    And Logout from App
+    #Given Registration of "Seller" using "<Mobile_no>" , "<GST>" , "<Seller_Name>" , "<Email_id>" and "<Password>"
+    #And Logout from App
     When Another Seller trying to register with already registered '<Mobile_no>' using '<Seller_Name>'
     Then Seller should get <error_msg>
-    And Unregistration of "Seller" through DataBase using <Mobile_no>
+    #And Unregistration of "Seller" through DataBase using <Mobile_no>
 
     Examples:
       | Mobile_no  | Email_id             | Password | GST             | Seller_Name | error_msg            |
       | 8888888888 | 8888888888@gmail.com | Test123  | 27AAZFA3739M1ZM | Auto Seller | Mobile already exist |
 
 #Issue in app with below scenario
-  #@Test_2
-  #Scenario Outline: Verification of Seller registration using registered email id
-    #Given Registration of "Seller" using <Mobile_no> , <GST> , <Seller_Name> , <Email_id> and <Password>
+  @Test_2_2
+  Scenario Outline: Verification of Seller registration using registered email id
+    #Given Registration of "Seller" using "<Mobile_no>" , "<GST>" , "<Seller_Name>" , "<Email_id>" and "<Password>"
     #And Logout from App
-    #When Another Seller trying to register with already registered <Email_id> using different <new_Mobile_no> and <Seller_Name>
-    #Then Seller should get <error_msg>
+    When Another Seller trying to register with already registered '<Email_id>' using different '<new_Mobile_no>' and '<Seller_Name>'
+    Then Seller should get <error_msg>
 
-    #Examples:
-     # | Mobile_no  | Email_id             | Password | GST             | Seller_Name | error_msg             | new_Mobile_no |
-      #| 8888888888 | 8888888888@gmail.com | Test123  | 27AAZFA3739M1ZM | Auto Seller | Mobile already exist! | 9888888888    |
+    Examples:
+      | Mobile_no  | Email_id             | Password | GST             | Seller_Name | error_msg             | new_Mobile_no |
+      | 8888888888 | 8888888888@gmail.com | Test123  | 27AAZFA3739M1ZM | Auto Seller | Email already exist | 9888888888    |
 
   @Test_2
   Scenario Outline: Verification of Seller registration using registered GST
-    Given Registration of "Seller" using <Mobile_no> , <GST> , <Seller_Name> , <Email_id> and <Password>
-    And Logout from App
+    #Given Registration of "Seller" using "<Mobile_no>" , "<GST>" , "<Seller_Name>" , "<Email_id>" and "<Password>"
+    #And Logout from App
     When Another Seller trying to register with already registered '<GST>' using different '<new_Mobile_no>' , '<new_Email_id>' , '<Password>' and '<Seller_Name>'
     Then Seller should get <error_msg>
-    And Unregistration of "Seller" through DataBase using <Mobile_no>
+    #And Unregistration of "Seller" through DataBase using <Mobile_no>
 
 
     Examples:
