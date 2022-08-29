@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
         plugin = {"html:target/cucumberHtmlReport"},
         //pretty:target/cucumber-json-report.json
         features = {"src/test/resources/features"},
-        tags={"@Test_2"},
+        tags={"@Test_4"},
         glue = {"stepDefinitions"}
 )
 
