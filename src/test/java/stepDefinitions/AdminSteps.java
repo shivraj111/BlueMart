@@ -64,9 +64,9 @@ public class AdminSteps {
         Thread.sleep(2000);
         AdminPage.select_file.click();
         Thread.sleep(2000);
-        driver.findElement(By.xpath("//span[text()="+manufacturer_name+"]")).click();
+        driver.findElement(By.xpath("//span[text()='"+manufacturer_name+"']")).click();
         Thread.sleep(2000);
-        AdminPage.upload_file.click();
+        AdminPage.add_files_button.click();
 
 
 
