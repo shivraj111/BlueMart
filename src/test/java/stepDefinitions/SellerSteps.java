@@ -137,6 +137,7 @@ public class SellerSteps {
         while (it.hasNext()) {
             String query=it.next();
             int i = sql.updateQuery(query, "blumart");
+            System.out.println(query + " going to execute");
             Assert.assertNotEquals("delete Query return value : " + i, 0, i);
             System.out.println(query + " executed successfully");
         }
