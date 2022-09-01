@@ -19,7 +19,11 @@ formatter.step({
   "keyword": "Given "
 });
 formatter.step({
-  "name": "Create \"\u003cManufacturer\u003e\", \"Brand\" and \"Product\" using \"variant\"",
+  "name": "Create \"\u003cManufacturer\u003e\"",
+  "keyword": "And "
+});
+formatter.step({
+  "name": "Delete \"\u003cManufacturer\u003e\"",
   "keyword": "And "
 });
 formatter.examples({
@@ -73,11 +77,21 @@ formatter.result({
   "status": "passed"
 });
 formatter.step({
-  "name": "Create \"Shivraj\", \"Brand\" and \"Product\" using \"variant\"",
+  "name": "Create \"Shivraj\"",
   "keyword": "And "
 });
 formatter.match({
-  "location": "AdminSteps.create_and_using(String,String,String,String)"
+  "location": "AdminSteps.create_and_using(String)"
+});
+formatter.result({
+  "status": "passed"
+});
+formatter.step({
+  "name": "Delete \"Shivraj\"",
+  "keyword": "And "
+});
+formatter.match({
+  "location": "AdminSteps.Delete(String)"
 });
 formatter.result({
   "status": "passed"

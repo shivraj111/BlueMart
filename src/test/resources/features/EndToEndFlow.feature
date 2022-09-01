@@ -10,7 +10,10 @@ Feature: Manufacturer , Brand and product Creation
   @E2E
   Scenario Outline: End to End Flow
     Given Login as "Admin"
-    And Create "<Manufacturer>", "Brand" and "Product" using "variant"
+    And Create "<Manufacturer>"
+    And Delete "<Manufacturer>"
+    And Create "<Brand>"
+
     #And Registration of "Seller" using <Mobile_no> , <GST> , <Seller_Name> , <Email_id> and <Password>
     #When Seller fetch product
     #Then product should be in "Pending" state
@@ -18,8 +21,8 @@ Feature: Manufacturer , Brand and product Creation
 
 
     Examples:
-      | Mobile_no  | Email_id             | Password | GST             | Seller_Name | Manufacturer |
-      | 8888888888 | 8888888888@gmail.com | Test123  | 27AAZFA3739M1ZM | Auto Seller | Shivraj      |
+      | Mobile_no  | Email_id             | Password | GST             | Seller_Name | Manufacturer         | Brand |
+      | 8888888888 | 8888888888@gmail.com | Test123  | 27AAZFA3739M1ZM | Auto Seller | Shivraj_manufacturer | Shiv  |
 
 
 

@@ -5,6 +5,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import helpers.MySqlDB;
+import modules.SellerActions;
 import org.junit.Assert;
 import org.junit.rules.ExpectedException;
 import org.openqa.selenium.Keys;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Properties;
 
+import static helpers.CommonActionHelpers.getOTP;
+
 public class SellerSteps {
 
     public WebDriver driver = BrowserSetup.driver;
@@ -31,9 +34,17 @@ public class SellerSteps {
     public Properties prop = BrowserSetup.prop;
     MySqlDB sql;
 
+    @Given("Registration of {string} using {string} , {string} , {string} , {string} and {string}")
+    public void registration_of_app_using_GST_PAN_Seller_Name_Email_id_and_Test(String appName, String mobile_no, String GST, String sellerName, String email_id, String password) throws SQLException, IOException, InterruptedException {
+        SellerActions sellerActions= new SellerActions();
+        sellerActions.seller_registration(appName, mobile_no, GST, sellerName, email_id, password);
+
+    }
+
     @Given("^Unregistration of \"([^\"]*)\" through DataBase using (.*)$")
     public void unregistration_of_through_DataBase_using(String userType, String mobile_no) throws SQLException, IOException {
-        deletequery(mobile_no, getUserID(mobile_no));
+        SellerActions sellerActions = new SellerActions();
+        sellerActions.deletequery(mobile_no, sellerActions.getUserID(mobile_no));
     }
 
     @When("^Seller trying to register with already registered '(.*)' using '(.*)'$")
@@ -63,7 +74,7 @@ public class SellerSteps {
         Thread.sleep(1000);
         SellerPage.send_OTP_button.click();
         Thread.sleep(1000);
-        SellerPage.otp_input.sendKeys(String.valueOf(LoginSteps.getOTP(new_mobil_no)));
+        SellerPage.otp_input.sendKeys(String.valueOf(getOTP(new_mobil_no)));
         Thread.sleep(1000);
         SellerPage.email_input.sendKeys(email_id);
         SellerPage.mobile_no.sendKeys(Keys.ENTER);
@@ -84,7 +95,7 @@ public class SellerSteps {
         Thread.sleep(1000);
         SellerPage.send_OTP_button.click();
         Thread.sleep(1000);
-        SellerPage.otp_input.sendKeys(String.valueOf(LoginSteps.getOTP(new_mobil_no)));
+        SellerPage.otp_input.sendKeys(String.valueOf(getOTP(new_mobil_no)));
         Thread.sleep(1000);
         SellerPage.email_input.sendKeys(new_email_id);
         SellerPage.password_input.sendKeys(password);
@@ -126,40 +137,12 @@ public class SellerSteps {
     }
 
 
-    public void deletequery(String mobile_no, String userID) throws IOException, SQLException {
-        sql = new MySqlDB();
-        List<String> lst = new ArrayList<String>();
-        lst.add("delete from users where id=" + userID + ";");
-        lst.add("delete from sellers where user_id=" + userID + ";");
-        lst.add("delete from blumart.shops where phone like '%" + mobile_no + "';");
-
-        ListIterator<String> it = lst.listIterator();
-        while (it.hasNext()) {
-            String query=it.next();
-            int i = sql.updateQuery(query, "blumart");
-            System.out.println(query + " going to execute");
-            Assert.assertNotEquals("delete Query return value : " + i, 0, i);
-            System.out.println(query + " executed successfully");
-        }
-        System.out.println("Seller with mobile no: "+mobile_no +" unregistered successfully");
-        sql.closeConnection();
-    }
 
 
-    public String getUserID(String mobile_no) throws SQLException, IOException {
-        String id = null;
-        sql = new MySqlDB();
-        ResultSet rs = sql.executeQuery("Select * from users where user_type ='seller' and phone like '%" + mobile_no + "';", "blumart");
-        while (rs.next()) {
-            id = rs.getString("id");
-            System.out.println("UserID" + id);
-        }
-        rs.close();
-        sql.closeConnection();
-        return id;
-    }
 
-    @After("@Test_3")
+
+
+    @After("@Seller")
     public void Unregistration() throws Exception {
         //driver.quit();
         //driver.close();

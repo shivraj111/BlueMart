@@ -1,4 +1,4 @@
-@Test_3
+@Seller
 Feature: Seller functionality
 
   Background: Seller registration

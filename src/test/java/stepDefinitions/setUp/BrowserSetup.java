@@ -27,15 +27,15 @@ public class BrowserSetup {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
         System.setProperty("browser", "chrome");
-        System.setProperty("env", "dev");
-        if (System.getProperty("browser").contains("chrome") && System.getProperty("env").contains("dev")) {
+        System.setProperty("env", "Dev");
+        if (System.getProperty("browser").contains("chrome") && System.getProperty("env").contains("Dev")) {
             WebDriverManager.chromedriver().setup();
             driver = new ChromeDriver(options);
 
         }
         wait = new WebDriverWait(driver, 180);
         driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-        InputStream details= new FileInputStream("src//test//resources//details.properties");
+        InputStream details= new FileInputStream("src//test//resources//testData//"+System.getProperty("env")+"//details.properties");
         prop=new Properties();
         prop.load(details);
         //seller_registration("appName", "mobile_no", "GST", "sellerName", "email_id", "password");

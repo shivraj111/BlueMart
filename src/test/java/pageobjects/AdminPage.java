@@ -36,6 +36,35 @@ public class AdminPage extends BaseClass {
     @FindBy(how = How.XPATH, using = "//button[text()='Add Files']")
     public static WebElement add_files_button;
 
+
+    @FindBy(how = How.XPATH, using = "//input[@name='meta_title']")
+    public static WebElement meta_title;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='file-preview box sm']//h6/span")
+    public static WebElement manufacturer_img_box;
+
+    @FindBy(how = How.XPATH, using = "//textarea[@name='meta_description']")
+    public static WebElement meta_description;
+
+    @FindBy(how = How.XPATH, using = "//button[text()='Save']")
+    public static WebElement save_button;
+
+    @FindBy(how = How.XPATH, using = "//input[@name='search']")
+    public static WebElement search_textbox;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='card-body']/table/tbody/tr/td")
+    public static WebElement  search_result;
+
+    @FindBy(how = How.XPATH, using = "//h4[text()='Delete Confirmation']/../../div/a[text()='Delete']")
+    public static WebElement  delete_button;
+
+
+    @FindBy(how = How.XPATH, using = "//span[text()='Manufacturer has been deleted successfully']")
+    public static WebElement  manufacturer_delete_msg;
+
+    @FindBy(how = How.XPATH, using = "//span[text()='Manufacturer has been inserted successfully']")
+    public static WebElement  manufacturer_added_msg;
+
     public AdminPage(WebDriver driver) {
         super(driver);
     }
