@@ -18,8 +18,17 @@ public class AdminPage extends BaseClass {
     @FindBy(how = How.XPATH, using = "//h1[text()='All manufacturers']/../../following-sibling::div//h5[text()='Add New Manufacturer']")
     public static WebElement manufacturer_page;
 
+    @FindBy(how = How.XPATH, using = "//h1[text()='All Brands']/../../following-sibling::div//h5[text()='Add New Brand']")
+    public static WebElement brand_page;
+
+    @FindBy(how = How.XPATH, using = "//button[@title='Please Select']")
+    public static WebElement manufacturer_dropdown;
+
+    @FindBy(how = How.XPATH, using = "//input[@aria-label='Search']")
+    public static WebElement manufacturer_search_name;
+
     @FindBy(how = How.XPATH, using = "//label[text()='Name']/../input[@name='name']")
-    public static WebElement manufacturer_name;
+    public static WebElement name;
 
     @FindBy(how = How.XPATH, using = "//label[contains(text(),'Logo')]/following-sibling::div//div[text()='Browse']")
     public static WebElement browse_button;
@@ -62,8 +71,13 @@ public class AdminPage extends BaseClass {
     @FindBy(how = How.XPATH, using = "//span[text()='Manufacturer has been deleted successfully']")
     public static WebElement  manufacturer_delete_msg;
 
+    @FindBy(how = How.XPATH, using = "//span[text()='Brand has been deleted successfully']")
+    public static WebElement  brand_delete_msg;
     @FindBy(how = How.XPATH, using = "//span[text()='Manufacturer has been inserted successfully']")
     public static WebElement  manufacturer_added_msg;
+
+    @FindBy(how = How.XPATH, using = "//span[text()='Brand has been inserted successfully']")
+    public static WebElement  brand_added_msg;
 
     public AdminPage(WebDriver driver) {
         super(driver);

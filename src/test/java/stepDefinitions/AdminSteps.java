@@ -44,11 +44,66 @@ public class AdminSteps {
 
     @Given("Create {string}")
     public void create_and_using(String name) throws InterruptedException {
+            manufacturer_creation(name);
+    }
 
+    @Given("Create {string} using {string}")
+    public void create(String brand,String manufacturer) throws InterruptedException {
+
+        brand_creation(brand,manufacturer);
+    }
+
+    @Given("Create new {string} using {string} , {string}")
+    public void create_product(String product,String category,String brand) throws InterruptedException {
+
+
+    }
+
+    public void brand_creation(String brand,String manufacturer) throws InterruptedException {
+        String search_element = "Brand";
+        navigateToMenu(search_element);
+        wait.until(ExpectedConditions.visibilityOf(AdminPage.brand_page));
+        Thread.sleep(1000);
+        AdminPage.manufacturer_dropdown.click();
+        Thread.sleep(1000);
+        AdminPage.manufacturer_search_name.sendKeys(manufacturer);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//ul[@class='dropdown-menu inner show']//span[text()='"+manufacturer+"']")).click();
+        AdminPage.name.sendKeys(brand);
+        AdminPage.browse_button.click();
+        Thread.sleep(2000);
+        AdminPage.upload_file.click();
+        //AdminPage.browse_link.click();
+        Thread.sleep(2000);
+        WebElement fileInput = driver.findElement(By.name("files[]"));
+
+        fileInput.sendKeys("C:/Users/Om Computers/Documents/Images/" + brand + ".jpg");
+        Thread.sleep(2000);
+        AdminPage.select_file.click();
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//span[text()='" + brand + "']")).click();
+        Thread.sleep(2000);
+        AdminPage.add_files_button.click();
+        Thread.sleep(2000);
+        Assert.assertEquals("Brand image not selected", AdminPage.manufacturer_img_box.getText(), brand);
+        AdminPage.meta_title.sendKeys(brand+"_Meta");
+        AdminPage.meta_description.sendKeys(brand+"meta description");
+        AdminPage.save_button.click();
+        Assert.assertTrue("Brand added msg not displayd", AdminPage.brand_added_msg.isDisplayed());
+
+    }
+
+    public void product_creation()
+    {
+
+
+    }
+
+    public void manufacturer_creation(String name) throws InterruptedException {
         String search_element = "Manufacturer";
         navigateToMenu(search_element);
         wait.until(ExpectedConditions.visibilityOf(AdminPage.manufacturer_page));
-        AdminPage.manufacturer_name.sendKeys(name);
+        AdminPage.name.sendKeys(name);
         AdminPage.browse_button.click();
         Thread.sleep(2000);
         AdminPage.upload_file.click();
@@ -68,25 +123,45 @@ public class AdminSteps {
         AdminPage.meta_title.sendKeys("Shivraj_Meta");
         AdminPage.meta_description.sendKeys("meta description");
         AdminPage.save_button.click();
-        Assert.assertTrue("manufacturer added msg not displayd",AdminPage.manufacturer_added_msg.isDisplayed());
-
+        Assert.assertTrue("manufacturer added msg not displayd", AdminPage.manufacturer_added_msg.isDisplayed());
 
     }
 
     @Given("Delete {string}")
-    public void Delete(String manufacturer_name) throws InterruptedException {
-        String search_element = "Manufacturer";
-        navigateToMenu(search_element);
-        wait.until(ExpectedConditions.visibilityOf(AdminPage.manufacturer_page));
-        AdminPage.search_textbox.sendKeys(manufacturer_name);
-        AdminPage.search_textbox.sendKeys(Keys.ENTER);
-        Thread.sleep(2000);
-        wait.until(ExpectedConditions.visibilityOf(AdminPage.search_result));
-        driver.findElement(By.xpath("//div[@class='card-body']/table/tbody/tr/td[text()='Shivraj']/../td/a[@title='Delete']")).click();
-        AdminPage.delete_button.click();
-        Assert.assertTrue("manufacturer delete msg not displayd",AdminPage.manufacturer_delete_msg.isDisplayed());
+    public void Delete(String name) throws InterruptedException {
+
+        if(name.contains("Manufacturer")) {
+            String search_element = "Manufacturer";
+            navigateToMenu(search_element);
+            wait.until(ExpectedConditions.visibilityOf(AdminPage.manufacturer_page));
+        }
+        else if (name.contains("Brand")) {
+            String search_element = "Brand";
+            navigateToMenu(search_element);
+            wait.until(ExpectedConditions.visibilityOf(AdminPage.brand_page));
+        }
+            AdminPage.search_textbox.sendKeys(name);
+            AdminPage.search_textbox.sendKeys(Keys.ENTER);
+            Thread.sleep(2000);
+            wait.until(ExpectedConditions.visibilityOf(AdminPage.search_result));
+            driver.findElement(By.xpath("//div[@class='card-body']/table/tbody/tr/td[text()='" + name + "']/../td/a[@title='Delete']")).click();
+            AdminPage.delete_button.click();
+
+        if(name.contains("Manufacturer")) {
+            Assert.assertTrue("manufacturer delete msg not displayd", AdminPage.manufacturer_delete_msg.isDisplayed());
+        }
+        else if (name.contains("Brand")) {
+            Assert.assertTrue("Brand delete msg not displayd", AdminPage.brand_delete_msg.isDisplayed());
+        }
 
     }
+
+
+
+
+
+
+
 
     public void navigateToMenu(String search_element) throws InterruptedException {
 
