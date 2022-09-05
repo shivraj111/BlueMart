@@ -56,6 +56,15 @@ public class AdminSteps {
     @Given("Create new {string} using {string} , {string}")
     public void create_product(String product,String category,String brand) throws InterruptedException {
 
+        String search_element = "Add New Catalog";
+        navigateToMenu(search_element);
+        wait.until(ExpectedConditions.visibilityOf(AdminPage.addNewCatalog_page));
+        AdminPage.category_dropdown.click();
+        AdminPage.category_search_name.sendKeys(category);
+        Thread.sleep(1000);
+        driver.findElement(By.xpath("//ul[@class='dropdown-menu inner show']//span[contains(text(),'"+category +"')]")).click();
+
+
 
     }
 

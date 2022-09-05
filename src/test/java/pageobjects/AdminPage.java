@@ -21,8 +21,16 @@ public class AdminPage extends BaseClass {
     @FindBy(how = How.XPATH, using = "//h1[text()='All Brands']/../../following-sibling::div//h5[text()='Add New Brand']")
     public static WebElement brand_page;
 
+    @FindBy(how = How.XPATH, using = "//h5[text()='Add New Catalog']")
+    public static WebElement addNewCatalog_page;
     @FindBy(how = How.XPATH, using = "//button[@title='Please Select']")
     public static WebElement manufacturer_dropdown;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='filter-option']//div[text()='Beverages']")
+    public static WebElement category_dropdown;
+
+    @FindBy(how = How.XPATH, using = "//div[@class='dropdown bootstrap-select form-control aiz- dropup show']//input[@aria-label='Search']")
+    public static WebElement category_search_name;
 
     @FindBy(how = How.XPATH, using = "//input[@aria-label='Search']")
     public static WebElement manufacturer_search_name;

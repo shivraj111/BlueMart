@@ -14,7 +14,7 @@ Feature: Manufacturer , Brand and product Creation
     #And Delete "<Manufacturer>"
     And Create "<Brand>" using "<Manufacturer>"
     And Delete "<Brand>"
-    #And Create new "<Product>" using "<Category>" , "<Brand>"
+    And Create new "<Product>" using "<Category>" , "<Brand>"
 
     #And Registration of "Seller" using <Mobile_no> , <GST> , <Seller_Name> , <Email_id> and <Password>
     #When Seller fetch product
