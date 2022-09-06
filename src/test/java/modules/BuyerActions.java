@@ -24,6 +24,7 @@ public class BuyerActions {
         PageFactory.initElements(driver, LoginPage.class);
         LoginPage.loginSignUp_link.click();
         System.out.println("Login link clicked");
+
         LoginPage.loginWithPassword_link.click();
         System.out.println("login With Password Link  clicked");
         LoginPage.email_input.sendKeys(username);
