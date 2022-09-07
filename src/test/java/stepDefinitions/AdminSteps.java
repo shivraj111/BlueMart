@@ -63,6 +63,7 @@ public class AdminSteps {
         String price_qty_1="10";
         String price_qty_2="20";
         String product_gallery=product + "_Gallery_Img";
+        String product_thumbnail=product + "_Thumbnail_Img";
 
         String search_element = "Add New Catalog";
         navigateToMenu(search_element);
@@ -121,7 +122,25 @@ public class AdminSteps {
         Thread.sleep(2000);
         AdminPage.add_files_button.click();
         Thread.sleep(2000);
-        Assert.assertEquals("manufacturer image not selected", AdminPage.img_box_selectd.getText(),product_gallery );
+        Assert.assertEquals("Gallery image not selected", AdminPage.img_box_selectd.getText(),product_gallery );
+
+        AdminPage.thumbnail_image_browse_button.click();
+        Thread.sleep(2000);
+        AdminPage.upload_new.click();
+        //AdminPage.browse_link.click();
+        Thread.sleep(2000);
+        WebElement fileInput_2 = driver.findElement(By.name("files[]"));
+
+        fileInput_2.sendKeys("C:/Users/Om Computers/Documents/Images/" + product_thumbnail+".jpg");
+        Thread.sleep(2000);
+        AdminPage.select_file.click();
+        Thread.sleep(2000);
+        driver.findElement(By.xpath("//span[text()='"+ product_thumbnail+"']")).click();
+        Thread.sleep(2000);
+        AdminPage.add_files_button.click();
+        Thread.sleep(2000);
+        Assert.assertEquals("Thumbnail image not selected", AdminPage.img_box_selectd.getText(),product_thumbnail );
+
 
 
     }

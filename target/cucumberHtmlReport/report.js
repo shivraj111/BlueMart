@@ -84,7 +84,8 @@ formatter.match({
   "location": "AdminSteps.create_product(String,String,String)"
 });
 formatter.result({
-  "status": "passed"
+  "error_message": "org.junit.ComparisonFailure: Thumbnail image not selected expected:\u003cApple Juice_[Gallery]_Img\u003e but was:\u003cApple Juice_[Thumbnail]_Img\u003e\r\n\tat org.junit.Assert.assertEquals(Assert.java:117)\r\n\tat stepDefinitions.AdminSteps.create_product(AdminSteps.java:142)\r\n\tat ✽.Create new \"Apple Juice\" using \"Juices \u0026 Drinks\" , \"Shiv_Brand\"(file:src/test/resources/features/EndToEndFlow.feature:17)\r\n",
+  "status": "failed"
 });
 formatter.after({
   "status": "passed"

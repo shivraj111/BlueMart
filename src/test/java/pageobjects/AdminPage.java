@@ -56,6 +56,8 @@ public class AdminPage extends BaseClass {
     @FindBy(how = How.XPATH, using = "//label[contains(text(),'Gallery Images')]/following-sibling::div//div[text()='Browse']")
     public static WebElement gallery_image_browse_button;
 
+    @FindBy(how = How.XPATH, using = "//label[contains(text(),'Thumbnail Image ')]/following-sibling::div//div[text()='Browse']")
+    public static WebElement thumbnail_image_browse_button;
     @FindBy(how = How.XPATH, using = "//div[@class='modal-content h-100']//a[text()='Upload New']")
     public static WebElement upload_new;
 
