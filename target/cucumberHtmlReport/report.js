@@ -19,14 +19,6 @@ formatter.step({
   "keyword": "Given "
 });
 formatter.step({
-  "name": "Create \"\u003cManufacturer\u003e\"",
-  "keyword": "And "
-});
-formatter.step({
-  "name": "Create \"\u003cBrand\u003e\" using \"\u003cManufacturer\u003e\"",
-  "keyword": "And "
-});
-formatter.step({
   "name": "Create new \"\u003cProduct\u003e\" using \"\u003cCategory\u003e\" , \"\u003cBrand\u003e\"",
   "keyword": "And "
 });
@@ -80,26 +72,6 @@ formatter.step({
 });
 formatter.match({
   "location": "AdminSteps.login_as(String)"
-});
-formatter.result({
-  "status": "passed"
-});
-formatter.step({
-  "name": "Create \"Shivraj_Manufacturer\"",
-  "keyword": "And "
-});
-formatter.match({
-  "location": "AdminSteps.create_and_using(String)"
-});
-formatter.result({
-  "status": "passed"
-});
-formatter.step({
-  "name": "Create \"Shiv_Brand\" using \"Shivraj_Manufacturer\"",
-  "keyword": "And "
-});
-formatter.match({
-  "location": "AdminSteps.create(String,String)"
 });
 formatter.result({
   "status": "passed"

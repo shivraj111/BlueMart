@@ -10,9 +10,9 @@ Feature: Manufacturer , Brand and product Creation
   @E2E
   Scenario Outline: End to End Flow
     Given Login as "Admin"
-    And Create "<Manufacturer>"
+    #And Create "<Manufacturer>"
     #And Delete "<Manufacturer>"
-    And Create "<Brand>" using "<Manufacturer>"
+    #And Create "<Brand>" using "<Manufacturer>"
     #And Delete "<Brand>"
     And Create new "<Product>" using "<Category>" , "<Brand>"
 

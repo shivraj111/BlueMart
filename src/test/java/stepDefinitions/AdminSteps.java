@@ -62,6 +62,7 @@ public class AdminSteps {
         String mrp_qty_2="25";
         String price_qty_1="10";
         String price_qty_2="20";
+        String product_gallery=product + "_Gallery_Img";
 
         String search_element = "Add New Catalog";
         navigateToMenu(search_element);
@@ -112,15 +113,15 @@ public class AdminSteps {
         Thread.sleep(2000);
         WebElement fileInput = driver.findElement(By.name("files[]"));
 
-        fileInput.sendKeys("C:/Users/Om Computers/Documents/Images/" + product + "_Gallery_Img.jpg");
+        fileInput.sendKeys("C:/Users/Om Computers/Documents/Images/" + product_gallery+".jpg");
         Thread.sleep(2000);
         AdminPage.select_file.click();
         Thread.sleep(2000);
-        driver.findElement(By.xpath("//span[text()='"+ product + "_Gallery_Img.jpg']")).click();
+        driver.findElement(By.xpath("//span[text()='"+ product_gallery+"']")).click();
         Thread.sleep(2000);
         AdminPage.add_files_button.click();
         Thread.sleep(2000);
-        //Assert.assertEquals("manufacturer image not selected", AdminPage.img_box_selectd.getText(), name);
+        Assert.assertEquals("manufacturer image not selected", AdminPage.img_box_selectd.getText(),product_gallery );
 
 
     }
