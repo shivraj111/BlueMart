@@ -77,6 +77,18 @@ public class AdminPage extends BaseClass {
     @FindBy(how = How.XPATH, using = "//div[@class='file-preview box sm']//h6/span")
     public static WebElement img_box_selectd;
 
+    @FindBy(how = How.XPATH, using = "(//label[contains(text(),'SGST')]/following-sibling::div//input[@name='tax[]'])[1]")
+    public static WebElement SGST;
+
+
+    @FindBy(how = How.XPATH, using = "//label[contains(text(),'CGST')]/following-sibling::div//input[@name='tax[]']")
+    public static WebElement CGST;
+
+    @FindBy(how = How.XPATH, using = "//button[text()='Save & Publish']")
+    public static WebElement save_and_publish_button;
+
+
+
     @FindBy(how = How.XPATH, using = "//textarea[@name='meta_description']")
     public static WebElement meta_description;
 

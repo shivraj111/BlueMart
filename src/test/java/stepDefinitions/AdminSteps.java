@@ -22,6 +22,7 @@ import stepDefinitions.setUp.BrowserSetup;
 
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,17 +54,20 @@ public class AdminSteps {
         brand_creation(brand, manufacturer);
     }
 
-    @Given("Create new {string} using {string} , {string}")
-    public void create_product(String product, String category, String brand) throws InterruptedException {
+    @Given("Create new {string} using {string} , {string} , {string} , {string}")
+    public void create_product(String product, String category, String brand, String SGST, String CGST) throws InterruptedException, AWTException {
         String attribute = "SKU";
         String qty_1 = "250ml";
         String qty_2 = "500ml";
-        String mrp_qty_1="12";
-        String mrp_qty_2="25";
-        String price_qty_1="10";
-        String price_qty_2="20";
-        String product_gallery=product + "_Gallery_Img";
-        String product_thumbnail=product + "_Thumbnail_Img";
+        String mrp_qty_1 = "12";
+        String mrp_qty_2 = "25";
+        String price_qty_1 = "10";
+        String price_qty_2 = "20";
+        String case_size_qty_1="20";
+        String case_size_qty_2="20";
+
+        String product_gallery = product + "_Gallery_Img";
+        String product_thumbnail = product + "_Thumbnail_Img";
 
         String search_element = "Add New Catalog";
         navigateToMenu(search_element);
@@ -87,24 +91,51 @@ public class AdminSteps {
         Thread.sleep(1000);
         AdminPage.search_name.sendKeys(attribute);
         driver.findElement(By.xpath("//ul[@class='dropdown-menu inner show']//span[contains(text(),'" + attribute + "')]")).click();
+
+
         AdminPage.attribute_SKU_dropdown.click();
         AdminPage.search_name.sendKeys(qty_1);
         driver.findElement(By.xpath("//ul[@class='dropdown-menu inner show']//span[(text()='" + qty_1 + "')]")).click();
         AdminPage.search_name.clear();
+        
         AdminPage.search_name.sendKeys(qty_2);
         driver.findElement(By.xpath("//ul[@class='dropdown-menu inner show']//span[(text()='" + qty_2 + "')]")).click();
         driver.findElement(By.xpath("//div[@class='filter-option']//div[text()='" + qty_1 + "' and text()='" + qty_2 + "' ]")).click();
         Thread.sleep(2000);
         //Enter Amount without GST
-        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='"+qty_1+"']/ancestor::tr//input[@name='price_"+qty_1+"']")).clear();
-        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='"+qty_1+"']/ancestor::tr//input[@name='price_"+qty_1+"']")).sendKeys(price_qty_1);
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='" + qty_1 + "']/ancestor::tr//input[@name='price_" + qty_1 + "']")).clear();
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='" + qty_1 + "']/ancestor::tr//input[@name='price_" + qty_1 + "']")).sendKeys(price_qty_1);
         //Enter MRP
-        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='"+qty_1+"']/ancestor::tr//input[@name='mrp_"+qty_1+"']")).sendKeys(mrp_qty_1);
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='" + qty_1 + "']/ancestor::tr//input[@name='mrp_" + qty_1 + "']")).sendKeys(mrp_qty_1);
+
+        //Click on +
+        //driver.findElement(By.xpath("//label[text()='"+qty_1+"']//preceding-sibling::span")).click();
+
+        //Decrease browser zoom to 90 %
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_CONTROL);
+        robot.keyPress(KeyEvent.VK_MINUS);
+        robot.keyRelease(KeyEvent.VK_CONTROL);
+        robot.keyRelease(KeyEvent.VK_MINUS);
+
+        Thread.sleep(3000);
+        //Enter Case Size
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='"+qty_1+"']/ancestor::tbody//tr//input[@name='case_size_"+qty_1+"']")).clear();
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='"+qty_1+"']/ancestor::tbody//tr//input[@name='case_size_"+qty_1+"']")).sendKeys(case_size_qty_1);
+
+
+
+
         //Enter Amount without GST
-        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='"+qty_2+"']/ancestor::tr//input[@name='price_"+qty_2+"']")).clear();
-        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='"+qty_2+"']/ancestor::tr//input[@name='price_"+qty_2+"']")).sendKeys(price_qty_2);
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='" + qty_2 + "']/ancestor::tr//input[@name='price_" + qty_2 + "']")).clear();
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='" + qty_2 + "']/ancestor::tr//input[@name='price_" + qty_2 + "']")).sendKeys(price_qty_2);
         //Enter MRP
-        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='"+qty_2+"']/ancestor::tr//input[@name='mrp_"+qty_2+"']")).sendKeys(mrp_qty_2);
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='" + qty_2 + "']/ancestor::tr//input[@name='mrp_" + qty_2 + "']")).sendKeys(mrp_qty_2);
+
+        //Enter Case Size
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='" + qty_2 + "']/ancestor::tr//input[@name='case_size_" + qty_2 + "']")).clear();
+        driver.findElement(By.xpath("//tr[@class='variant']//label[text()='" + qty_2 + "']/ancestor::tr//input[@name='case_size_" + qty_2 + "']")).sendKeys(case_size_qty_2);
+
 
 
         AdminPage.gallery_image_browse_button.click();
@@ -114,15 +145,17 @@ public class AdminSteps {
         Thread.sleep(2000);
         WebElement fileInput = driver.findElement(By.name("files[]"));
 
-        fileInput.sendKeys("C:/Users/Om Computers/Documents/Images/" + product_gallery+".jpg");
+        fileInput.sendKeys("C:/Users/Om Computers/Documents/Images/" + product_gallery + ".jpg");
         Thread.sleep(2000);
         AdminPage.select_file.click();
         Thread.sleep(2000);
-        driver.findElement(By.xpath("//span[text()='"+ product_gallery+"']")).click();
+        driver.findElement(By.xpath("//span[text()='" + product_gallery + "']")).click();
         Thread.sleep(2000);
         AdminPage.add_files_button.click();
         Thread.sleep(2000);
-        Assert.assertEquals("Gallery image not selected", AdminPage.img_box_selectd.getText(),product_gallery );
+
+        //Validate Image selected
+        Assert.assertTrue("Gallery image not selected", driver.findElement(By.xpath("//div[@class='file-preview box sm']//h6/span[text()='" + product_gallery + "']")).isDisplayed());
 
         AdminPage.thumbnail_image_browse_button.click();
         Thread.sleep(2000);
@@ -131,18 +164,27 @@ public class AdminSteps {
         Thread.sleep(2000);
         WebElement fileInput_2 = driver.findElement(By.name("files[]"));
 
-        fileInput_2.sendKeys("C:/Users/Om Computers/Documents/Images/" + product_thumbnail+".jpg");
+        fileInput_2.sendKeys("C:/Users/Om Computers/Documents/Images/" + product_thumbnail + ".jpg");
         Thread.sleep(2000);
         AdminPage.select_file.click();
         Thread.sleep(2000);
-        driver.findElement(By.xpath("//span[text()='"+ product_thumbnail+"']")).click();
+        driver.findElement(By.xpath("//span[text()='" + product_thumbnail + "']")).click();
         Thread.sleep(2000);
         AdminPage.add_files_button.click();
         Thread.sleep(2000);
-        Assert.assertEquals("Thumbnail image not selected", AdminPage.img_box_selectd.getText(),product_thumbnail );
 
+        //Validate Image selected
+        Assert.assertTrue("Thumbnail image not selected", driver.findElement(By.xpath("//div[@class='file-preview box sm']//h6/span[text()='" + product_thumbnail + "']")).isDisplayed());
 
+        //Enter SGST percntage
+        AdminPage.SGST.clear();
+        AdminPage.SGST.sendKeys(SGST);
 
+        //Enter CGST percntage
+        AdminPage.CGST.clear();
+        AdminPage.CGST.sendKeys(CGST);
+        Thread.sleep(1000);
+        AdminPage.save_and_publish_button.click();
     }
 
     public void brand_creation(String brand, String manufacturer) throws InterruptedException {

@@ -19,7 +19,7 @@ formatter.step({
   "keyword": "Given "
 });
 formatter.step({
-  "name": "Create new \"\u003cProduct\u003e\" using \"\u003cCategory\u003e\" , \"\u003cBrand\u003e\"",
+  "name": "Create new \"\u003cProduct\u003e\" using \"\u003cCategory\u003e\" , \"\u003cBrand\u003e\" , \"\u003cSGST_%\u003e\" , \"\u003cCGST_%\u003e\"",
   "keyword": "And "
 });
 formatter.examples({
@@ -36,7 +36,9 @@ formatter.examples({
         "Category",
         "Manufacturer",
         "Brand",
-        "Product"
+        "Product",
+        "SGST_%",
+        "CGST_%"
       ]
     },
     {
@@ -48,7 +50,9 @@ formatter.examples({
         "Juices \u0026 Drinks",
         "Shivraj_Manufacturer",
         "Shiv_Brand",
-        "Apple Juice"
+        "Apple Juice",
+        "5",
+        "5"
       ]
     }
   ]
@@ -77,15 +81,14 @@ formatter.result({
   "status": "passed"
 });
 formatter.step({
-  "name": "Create new \"Apple Juice\" using \"Juices \u0026 Drinks\" , \"Shiv_Brand\"",
+  "name": "Create new \"Apple Juice\" using \"Juices \u0026 Drinks\" , \"Shiv_Brand\" , \"5\" , \"5\"",
   "keyword": "And "
 });
 formatter.match({
-  "location": "AdminSteps.create_product(String,String,String)"
+  "location": "AdminSteps.create_product(String,String,String,String,String)"
 });
 formatter.result({
-  "error_message": "org.junit.ComparisonFailure: Thumbnail image not selected expected:\u003cApple Juice_[Gallery]_Img\u003e but was:\u003cApple Juice_[Thumbnail]_Img\u003e\r\n\tat org.junit.Assert.assertEquals(Assert.java:117)\r\n\tat stepDefinitions.AdminSteps.create_product(AdminSteps.java:142)\r\n\tat ✽.Create new \"Apple Juice\" using \"Juices \u0026 Drinks\" , \"Shiv_Brand\"(file:src/test/resources/features/EndToEndFlow.feature:17)\r\n",
-  "status": "failed"
+  "status": "passed"
 });
 formatter.after({
   "status": "passed"

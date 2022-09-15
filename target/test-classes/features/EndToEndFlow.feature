@@ -14,7 +14,7 @@ Feature: Manufacturer , Brand and product Creation
     #And Delete "<Manufacturer>"
     #And Create "<Brand>" using "<Manufacturer>"
     #And Delete "<Brand>"
-    And Create new "<Product>" using "<Category>" , "<Brand>"
+    And Create new "<Product>" using "<Category>" , "<Brand>" , "<SGST_%>" , "<CGST_%>"
 
     #And Registration of "Seller" using <Mobile_no> , <GST> , <Seller_Name> , <Email_id> and <Password>
     #When Seller fetch product
@@ -23,8 +23,8 @@ Feature: Manufacturer , Brand and product Creation
 
 
     Examples:
-      | Mobile_no  | Email_id             | Password | GST             | Category        | Manufacturer         | Brand      | Product     |
-      | 8888888888 | 8888888888@gmail.com | Test123  | 27AAZFA3739M1ZM | Juices & Drinks | Shivraj_Manufacturer | Shiv_Brand | Apple Juice |
+      | Mobile_no  | Email_id             | Password | GST             | Category        | Manufacturer         | Brand      | Product     | SGST_% | CGST_% |
+      | 8888888888 | 8888888888@gmail.com | Test123  | 27AAZFA3739M1ZM | Juices & Drinks | Shivraj_Manufacturer | Shiv_Brand | Apple Juice | 5      | 5      |
 
 
 
